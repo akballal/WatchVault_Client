@@ -1,15 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "/src/components/Signup/Signup.css";
+import { useNavigate } from "react-router-dom";
 
 const backendUrl = "http://localhost:3000";
-const Signup = () => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showDiv, setShowDiv] = useState(false);
   const [result, setResult] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [user, setUser] = useState();
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("user");
+    if (loggedInUser) {
+      navigate("/loginsuccessful");
+    }
+  }, []);
+  
   return (
     <div id="signup" className="flex-col">
       <h1>Login</h1>
@@ -85,11 +95,14 @@ const Signup = () => {
                   password,
                 }),
               });
-              console.log(response.status);
-              console.log(response.statusText);
-              console.log(response.body);
 
-              if (response !== null) {
+              if (response.status === 200) {
+                // set the state of the user
+                // store the user in localStorage
+                 
+                localStorage.setItem("user", await response.text());
+                navigate("/loginsuccessful");
+              } else {
                 setResult(await response.text());
                 setShowDiv(true);
                 console.log(response);
@@ -109,6 +122,6 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;
 
 // neetcode1@gmail.com

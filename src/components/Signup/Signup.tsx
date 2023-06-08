@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Signup.css";
+import { useNavigate } from "react-router-dom";
 
 const backendUrl = "http://localhost:3000";
 const Signup = () => {
@@ -9,6 +10,8 @@ const Signup = () => {
   const [result, setResult] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+
+  const navigate = useNavigate();
 
   return (
     <div id="signup" className="flex-col">
@@ -89,7 +92,11 @@ const Signup = () => {
               console.log(response.statusText);
               console.log(response.body);
 
-              if (response !== null) {
+              if (response.status === 200) {
+                navigate('/signupsuccessful');
+              }
+              else
+              {
                 setResult(await response.text());
                 setShowDiv(true);
                 console.log(response);

@@ -8,55 +8,11 @@ import HomePage from "./components/Homepage/Homepage";
 import Signup from "./components/Signup/Signup";
 import Login from "./components/Login/Login";
 import AllProblems from "./components/AllProblems/AllProblems";
+import SignupSuccessful from "./components/Signup/SignupSuccessful";
+import LoginSuccessful from "./components/Login/LoginSuccessful";
+import AddData from "./components/AddData/AddData";
 import "./App.css";
 function App() {
-  // React learning:
-  // let items = ["Red", "Yellow", "Pink", "Orange"];
-  // let bs = [
-  //   "Primary",
-  //   "Secondary",
-  //   "Success",
-  //   "Danger",
-  //   "Warning",
-  //   "Info",
-  //   "Light",
-  //   "Dark",
-  // ];
-  // let bt_obj = [
-  //   {
-  //     name: "Primary",
-  //     classname: "btn btn-primary",
-  //   },
-  //   {
-  //     name: "Secondary",
-  //     classname: "btn btn-secondary",
-  //   },
-  //   {
-  //     name: "Success",
-  //     classname: "btn btn-success",
-  //   },
-  // ];
-  // function handleButtonclick() {}
-  // let [visible, setvisibility] = useState(true);
-  // let [children, setChildren] = useState("Initial Value");
-  // function handleAlert() {
-  //   setvisibility(true);
-  //   setChildren("changing alert message");
-  // }
-  // return (
-  //   <div>
-  //     {visible && (
-  //       <Alert children={children} OnClose={() => setvisibility(false)} />
-  //     )}
-  //     <ListGroups
-  //       items={items}
-  //       heading="Colors"
-  //       onSelectItem={(item) => console.log(item)}
-  //     />
-  //     <Button onClick={handleAlert} Buttons={bt_obj} />
-  //   </div>
-  // );
-
   return (
     <BrowserRouter>
       <Navbar />
@@ -65,8 +21,9 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/problemset/all/" element={<AllProblems />} />
-        {/* <Route path="/problems/:pid/" element={<ProblemsPage />} />
-        <Route path="*" element={<div>404 Not Found</div>} /> */}
+        <Route path="/signupsuccessful" element={<SignupSuccessful/>} />
+        <Route path="/loginsuccessful" element={<LoginSuccessful/>} />
+        <Route path="/adddata" element={<AddData/>} />
       </Routes>
     </BrowserRouter>
   );

@@ -6,7 +6,7 @@ const AllProblemsPage = () => {
   const [problems, setProblems] = useState([]);
 
   const init = async () => {
-    const response = await fetch(`${backendUrl}/questions`, {
+    const response = await fetch(`${backendUrl}/alldata`, {
       method: "GET",
     });
 
@@ -25,15 +25,22 @@ const AllProblemsPage = () => {
         <tbody>
           <tr>
             <th>Sr.No</th>
-            <th>Title</th>
-            <th>Difficulty</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Watched On</th>
+            <th>Rating</th>
+            <th>Type</th>
           </tr>
 
           {problems.map((prob, index) => (
             <tr>
               <td>{index + 1}</td>
-              <td>{prob.title}</td>
-              <td className={`${prob.difficulty}`}>{prob.difficulty}</td>
+              <td>{prob.name}</td>
+              <td>{prob.description}</td>
+              <td>{prob.watchedon}</td>
+              <td>{prob.rating}</td>
+              <td>{prob.type}</td>
+              
             </tr>
           ))}
         </tbody>
