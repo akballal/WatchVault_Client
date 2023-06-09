@@ -14,9 +14,9 @@ const Navbar = () => {
           <p>Movie Repo</p>
         </div>
       </Link>
-      <div className="nav-options">
+      {/* <div className="nav-options">
         <Link to={"/problemset/all/"}>Watch History</Link>
-      </div>
+      </div> */}
       <div className="nav-options">
         <Link to={"/signup"}>Signup</Link>
       </div>

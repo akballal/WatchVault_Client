@@ -11,6 +11,7 @@ const AllProblemsPage = () => {
     });
 
     const json = await response.json();
+    console.log(json.problems)
     setProblems(json.problems);
     console.log(json);
   };

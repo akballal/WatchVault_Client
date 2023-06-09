@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "/src/components/Signup/Signup.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const backendUrl = "http://localhost:3000";
 const Login = () => {
@@ -114,6 +114,9 @@ const Login = () => {
         >
           LOGIN
         </button>
+        <br></br>
+        <br></br>
+        <Link to="/">Homepage</Link>
       </div>
       {showDiv && (
         <div style={{ textAlign: "center", margin: "10px" }}>{result}</div>
