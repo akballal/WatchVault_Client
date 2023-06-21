@@ -7,7 +7,7 @@ import Navbar from "./components/Navbar";
 import HomePage from "./components/Homepage/Homepage";
 import Signup from "./components/Signup/Signup";
 import Login from "./components/Login/Login";
-import AllProblems from "./components/AllProblems/AllProblems";
+import WatchHistory from "./components/WatchHistory/WatchHistory";
 import SignupSuccessful from "./components/Signup/SignupSuccessful";
 import LoginSuccessful from "./components/Login/LoginSuccessful";
 import AddData from "./components/AddData/AddData";
@@ -20,7 +20,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/problemset/all/" element={<AllProblems />} />
+        <Route path="/watchhistory" element={<WatchHistory />} />
         <Route path="/signupsuccessful" element={<SignupSuccessful/>} />
         <Route path="/loginsuccessful" element={<LoginSuccessful/>} />
         <Route path="/adddata" element={<AddData/>} />

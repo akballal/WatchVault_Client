@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "/src/components/Signup/Signup.css";
 import { Link, useNavigate } from "react-router-dom";
 
+
+
 const backendUrl = "http://localhost:3000";
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,7 +16,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const loggedInUser = localStorage.getItem("user");
+    const loggedInUser = localStorage.getItem("token");
     if (loggedInUser) {
       navigate("/loginsuccessful");
     }
@@ -99,8 +101,9 @@ const Login = () => {
               if (response.status === 200) {
                 // set the state of the user
                 // store the user in localStorage
-                 
-                localStorage.setItem("user", await response.text());
+                const responseJson = await response.json();
+                localStorage.setItem("token", responseJson.token);
+                localStorage.setItem("User", responseJson.User);
                 navigate("/loginsuccessful");
               } else {
                 setResult(await response.text());
@@ -116,7 +119,10 @@ const Login = () => {
         </button>
         <br></br>
         <br></br>
-        <Link to="/">Homepage</Link>
+        <div>
+      <Link to="/">Homepage</Link>{' '}
+      <Link to="/signup">Signup</Link>
+    </div>
       </div>
       {showDiv && (
         <div style={{ textAlign: "center", margin: "10px" }}>{result}</div>

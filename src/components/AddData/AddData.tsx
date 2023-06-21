@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "/src/components/Signup/Signup.css";
 import { useNavigate } from "react-router-dom";
+import jwt from 'jsonwebtoken';
 
 const backendUrl = "http://localhost:3000";
 const AddData = () => {
@@ -11,8 +12,56 @@ const AddData = () => {
   const [type, setType] = useState("");
   const [showDiv, setShowDiv] = useState(false);
   const [result, setResult] = useState("");
+  const initialValues = {name:"", description:"", watchedon:"", rating:"", type:""};
+  const [formValues, setFormValues] = useState(initialValues);
+  const [formErrors, setFormErrors] = useState(initialValues);
 
   const navigate = useNavigate();
+
+
+  const handleChange = (e) =>
+  {
+    const {name, value} = e.target;
+    setFormValues({...formValues, [name]:value})
+  }
+
+  const decodeUser = () =>
+  {
+    try{
+    const loggedInUser = localStorage.getItem("token");
+    console.log(loggedInUser)
+    }
+    catch(e)
+    {
+      console.error(e)
+    }
+  }
+  
+  const validate = (values) =>
+  {
+    const errors = {};
+    if(!values.name)
+    {
+      errors.name = "Movie/Series name cannot be empty!!"
+    }
+    if(!values.description)
+    {
+      errors.description = "Movie/Series description cannot be empty!!"
+    }
+    if(!values.watchedon)
+    {
+      errors.watchedon = "Date cannot be empty!!"
+    }
+    if(!values.rating)
+    {
+      errors.rating = "Rating cannot be empty!!"
+    }
+    if(!values.type)
+    {
+      errors.type = "Please select if its a movie or series"
+    }
+    return errors;
+  }
 
   return (
     <div id="signup" className="flex-col">
@@ -21,48 +70,44 @@ const AddData = () => {
         <div className="subform">
           <label htmlFor="name">Name: </label>
           <input
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
+            // onChange={(e) => {
+            //   setName(e.target.value);
+            // }}
             type="text"
             required
             name="name"
             placeholder="Movie/Series Name"
+            onChange={handleChange}
           />
         </div>
+        <p style={{ textAlign: "center", margin: "10px", color:"red"}}> {formErrors.name} </p>
 
         <div className="subform">
           <label htmlFor="description">Description: </label>
           <input
-            onChange={(e) => {
-              setDescription(e.target.value);
-            }}
+            onChange={handleChange}
             type="text"
             required
             name="description"
             placeholder="Movie/Series description"
           />
         </div>
-
+        <p style={{ textAlign: "center", margin: "10px", color:"red" }}> {formErrors.description} </p>
         <div className="subform">
           <label htmlFor="watchedon">Watched on: </label>
           <input
-            onChange={(e) => {
-              setWatchedon(e.target.value);
-            }}
+            onChange={handleChange}
             type="Date"
             required
             name="watchedon"
             placeholder="Movie/Series description"
           />
         </div>
-
+        <p style={{ textAlign: "center", margin: "10px", color:"red" }}> {formErrors.watchedon} </p>
         <div className="subform">
           <label htmlFor="rating">Rating: </label>
           <select
-            onChange={(e) => {
-              setRating(e.target.value);
-            }}
+            onChange={handleChange}
             value={rating}
             required
             name="rating"
@@ -76,7 +121,7 @@ const AddData = () => {
             <option value="5">5</option>
           </select>
         </div>
-
+        <p style={{ textAlign: "center", margin: "10px", color:"red" }}> {formErrors.rating} </p>
         <div className="subform">
       <label htmlFor="type">Type: </label>
       <div>
@@ -85,9 +130,7 @@ const AddData = () => {
             type="radio"
             value="Movie"
             checked={type === 'Movie'}
-            onChange={(e) => {
-                setType(e.target.value);
-              }}
+            onChange={handleChange}
             required
             name="type"
           />
@@ -98,15 +141,14 @@ const AddData = () => {
             type="radio"
             value="Series"
             checked={type === 'Series'}
-            onChange={(e) => {
-                setType(e.target.value);
-              }}
+            onChange={handleChange}
             required
             name="type"
           />
           Series
         </label>
       </div>
+      <p style={{ textAlign: "center", margin: "10px", color:"red" }}> {formErrors.type} </p>
     </div>
 
         <button
@@ -114,13 +156,24 @@ const AddData = () => {
           id="test"
           onClick={async (e) => {
             try {
+                e.preventDefault();
+                const fieldErrors = validate(formValues);
+                const user = localStorage.getItem("User");
+                if(Object.keys(fieldErrors).length !== 0) 
+                {
+                setFormErrors(fieldErrors);
+                return;
+                }
+                else{
+                  const {name, description, watchedon, rating, type} = formValues
+                  console.log(formValues)
                 const response = await fetch(`${backendUrl}/adddata`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                  name,description,watchedon,rating,type
+                  name,description,watchedon,rating,type,user
                 }),
               });
 
@@ -133,7 +186,7 @@ const AddData = () => {
                 setShowDiv(true);
                 console.log(response);
               }
-            } catch (error) {
+            }} catch (error) {
               console.error("Signup failed:", error);
             }
           }}

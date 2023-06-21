@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import "./AllProblems.css";
+import "./WatchHistory.css";
 const backendUrl = "http://localhost:3000";
 
-const AllProblemsPage = () => {
-  const [problems, setProblems] = useState([]);
+const WatchHistory = () => {
+  const [allData, setallData] = useState([]);
 
   const init = async () => {
     const response = await fetch(`${backendUrl}/alldata`, {
@@ -12,7 +12,7 @@ const AllProblemsPage = () => {
 
     const json = await response.json();
     console.log(json.problems)
-    setProblems(json.problems);
+    setallData(json.problems);
     console.log(json);
   };
 
@@ -31,16 +31,18 @@ const AllProblemsPage = () => {
             <th>Watched On</th>
             <th>Rating</th>
             <th>Type</th>
+            <th>User</th>
           </tr>
 
-          {problems.map((prob, index) => (
-            <tr>
+          {allData.map((data, index) => (
+            <tr key={index}>
               <td>{index + 1}</td>
-              <td>{prob.name}</td>
-              <td>{prob.description}</td>
-              <td>{prob.watchedon}</td>
-              <td>{prob.rating}</td>
-              <td>{prob.type}</td>
+              <td>{data.name}</td>
+              <td>{data.description}</td>
+              <td>{data.watchedon}</td>
+              <td>{data.rating}</td>
+              <td>{data.type}</td>
+              <td>{data.user}</td>
               
             </tr>
           ))}
@@ -50,4 +52,4 @@ const AllProblemsPage = () => {
   );
 };
 
-export default AllProblemsPage;
+export default WatchHistory;

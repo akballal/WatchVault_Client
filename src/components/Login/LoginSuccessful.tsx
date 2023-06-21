@@ -9,13 +9,13 @@ const LoginSuccessful = () =>
         navigate('/login');
       };
     
-      const loggedInUser = localStorage.getItem("user");
+      const loggedInUser = localStorage.getItem("token");
       if (loggedInUser) {
         
     return (
         <div>
         <h1>Logged In, Welcome to your zone!!</h1>
-        <Link to="/adddata">Add Data</Link> &nbsp; <Link to={"/problemset/all/"}>Watch History</Link>
+        <Link to="/adddata">Add Data</Link> &nbsp; <Link to={"/watchhistory"}>Watch History</Link>
         <br></br>
         <br></br>
         <button onClick={handleLogout}>logout</button>
