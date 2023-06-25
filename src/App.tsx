@@ -11,6 +11,7 @@ import WatchHistory from "./components/WatchHistory/WatchHistory";
 import SignupSuccessful from "./components/Signup/SignupSuccessful";
 import LoginSuccessful from "./components/Login/LoginSuccessful";
 import AddData from "./components/AddData/AddData";
+import UpdateData from "./components/UpdateData/UpdateData";
 import "./App.css";
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/signupsuccessful" element={<SignupSuccessful/>} />
         <Route path="/loginsuccessful" element={<LoginSuccessful/>} />
         <Route path="/adddata" element={<AddData/>} />
+        <Route path="/updatedata" element={<UpdateData/>} />
       </Routes>
     </BrowserRouter>
   );
