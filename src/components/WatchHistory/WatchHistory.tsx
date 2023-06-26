@@ -6,16 +6,17 @@ const backendUrl = "http://localhost:3000";
 const WatchHistory = () => {
   const navigate = useNavigate();
   const [allData, setallData] = useState([]);
+  const loggedInUser = localStorage.getItem("User");
   
   const init = async () => {
-    const response = await fetch(`${backendUrl}/alldata`, {
+    const response = await fetch(`${backendUrl}/alldata/?loggedInUser=${loggedInUser}`, {
       method: "GET",
     });
 
     const json = await response.json();
-    console.log(json.problems);
+    console.log("json problems => " + json.problems);
     setallData(json.problems);
-    console.log(json);
+    console.log("json => " + json);
   };
 
   useEffect(() => {
@@ -51,8 +52,20 @@ const WatchHistory = () => {
       console.error("Error in deleting record: ", error);
     }
   };
-
+  
+  if(allData.length ===  0)
+  {
+    return(
+      <div>
+      <h3><i>No data as of now, start adding your records!!</i></h3>
+      <Link to="/adddata">Add Data</Link>
+      </div>
+    )
+  }
+  else
+  {
   return (
+    
     <div id="allproblems">
       <table>
         <tbody>
@@ -63,7 +76,6 @@ const WatchHistory = () => {
             <th>Watched On</th>
             <th>Rating</th>
             <th>Type</th>
-            <th>User</th>
             <th>ID</th>
           </tr>
 
@@ -75,7 +87,6 @@ const WatchHistory = () => {
               <td>{data.watchedon}</td>
               <td>{data.rating}</td>
               <td>{data.type}</td>
-              <td>{data.user}</td>
               <td>{data._id}</td>
               <td>
                 <button onClick={() => handleUpdate(data._id)}>Update</button>
@@ -83,10 +94,12 @@ const WatchHistory = () => {
               </td>
             </tr>
           ))}
+          <tr><Link to="/adddata">Add new entry</Link></tr>
         </tbody>
       </table>
     </div>
   );
+          }
 };
 
 export default WatchHistory;
