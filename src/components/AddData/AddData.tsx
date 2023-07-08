@@ -172,6 +172,7 @@ const AddData = () => {
               e.preventDefault();
               const fieldErrors = validate(formValues);
               const user = localStorage.getItem("User");
+              const token = localStorage.getItem("token");
               if (Object.keys(fieldErrors).length !== 0) {
                 setFormErrors(fieldErrors);
                 return;
@@ -183,14 +184,14 @@ const AddData = () => {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
+                    "authorization":token
                   },
                   body: JSON.stringify({
                     name,
                     description,
                     watchedon,
                     rating,
-                    type,
-                    user,
+                    type
                   }),
                 });
 

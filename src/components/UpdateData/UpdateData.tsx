@@ -19,6 +19,7 @@ const UpdateData = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = location.state;
+  const token = localStorage.getItem("token");
 
 
   const init = async () => {
@@ -27,7 +28,8 @@ const UpdateData = () => {
         method: "get",
         headers: {
           "Content-Type": "application/json",
-          "id":id
+          "id":id,
+          "authorization":token
         },
       });
       console.log("current data => ", currentData)
@@ -198,6 +200,7 @@ const UpdateData = () => {
                 method: "PUT",
                 headers: {
                   "Content-Type": "application/json",
+                  "authorization":token
                 },
                 body: JSON.stringify({
                   id,name,description,watchedon,rating,type,user

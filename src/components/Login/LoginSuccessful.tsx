@@ -1,8 +1,20 @@
 import { Link, useNavigate } from "react-router-dom"
-
+import { useEffect } from "react";
+import jwtDecode from "jwt-decode";
 
 const LoginSuccessful = () =>
 {
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+          const decodedToken = jwtDecode(token);
+          const currentTime = Date.now() / 1000; // Convert to seconds
+    
+          if (decodedToken.exp < currentTime) {
+            navigate("/login");
+          }
+        }
+      }, []);
     const navigate = useNavigate();
     const handleLogout = () => {
         localStorage.clear();

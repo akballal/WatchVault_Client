@@ -1,27 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./WatchHistory.css";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 const backendUrl = "http://localhost:3000";
 
 const WatchHistory = () => {
   const navigate = useNavigate();
   const [allData, setallData] = useState([]);
-  const loggedInUser = localStorage.getItem("User");
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const token = localStorage.getItem("token");
   
   const init = async () => {
-    const response = await fetch(`${backendUrl}/alldata/?loggedInUser=${loggedInUser}`, {
+    const response = await fetch(`${backendUrl}/alldata`, {
       method: "GET",
+      headers: {
+        "authorization":token
+      },
     });
 
     const json = await response.json();
     console.log("json problems => " + json.problems);
     setallData(json.problems);
     console.log("json => " + json);
+    console.log(response.status)
+    if (response.status === 403) {
+      navigate("/login"); // Redirect to login page
+      return;
+    }
   };
 
   useEffect(() => {
     init();
-  }, []);
+    }, [navigate]);
 
   const handleUpdate = (id: any) => {
     console.log("Update data with id:", id);
@@ -35,6 +47,7 @@ const WatchHistory = () => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
+          "authorization":token
         },
         body: JSON.stringify({
           id,
@@ -52,23 +65,48 @@ const WatchHistory = () => {
       console.error("Error in deleting record: ", error);
     }
   };
-  
+
+  const handleFilters = async () => {
+    console.log(startDate)
+    console.log(endDate)
+    const response = await fetch(`${backendUrl}/filterdata`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "authorization":token
+      },
+      body: JSON.stringify({
+        filterType : 'daterange', startDate, endDate
+      }),
+    });
+    const json = await response.json();
+    console.log("json problems => " + json.problems);
+    setallData(json.problems);
+    console.log("json => " + json);
+  };
+
   if(allData.length ===  0)
   {
     return(
       <div>
-      <h3><i>No data as of now, start adding your records!!</i></h3>
-      <Link to="/adddata">Add Data</Link>
-      </div>
-    )
-  }
-  else
-  {
-  return (
-    
-    <div id="allproblems">
-      <table>
+         <table>
         <tbody>
+          <tr>
+          <label>
+          <input
+            onChange={(e)=> {setStartDate(e.target.value)}}
+            type="Date"
+            required
+            placeholder="Movie/Series description"
+          /></label>  
+           <label><input
+            onChange={(e)=> {setEndDate(e.target.value)}}
+            type="Date"
+            required
+            placeholder="Movie/Series description"
+          /></label>
+          <button onClick={handleFilters}>Apply Filters</button>
+          </tr>
           <tr>
             <th>Sr.No</th>
             <th>Name</th>
@@ -76,7 +114,44 @@ const WatchHistory = () => {
             <th>Watched On</th>
             <th>Rating</th>
             <th>Type</th>
-            <th>ID</th>
+          </tr>
+          <tr>
+          <Link to="/adddata">Add Data</Link> 
+          </tr>
+          </tbody></table>
+      </div>
+      
+    )
+  }
+  
+  return (
+    
+    <div id="allproblems">
+      <table>
+        <tbody>
+          <tr>
+          <label>
+          <input
+            onChange={(e)=> {setStartDate(e.target.value)}}
+            type="Date"
+            required
+            placeholder="Movie/Series description"
+          /></label>  
+           <label><input
+            onChange={(e)=> {setEndDate(e.target.value)}}
+            type="Date"
+            required
+            placeholder="Movie/Series description"
+          /></label>
+          <button onClick={handleFilters}>Apply Filters</button>
+          </tr>
+          <tr>
+            <th>Sr.No</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Watched On</th>
+            <th>Rating</th>
+            <th>Type</th>
           </tr>
 
           {allData.map((data, index) => (
@@ -87,7 +162,6 @@ const WatchHistory = () => {
               <td>{data.watchedon}</td>
               <td>{data.rating}</td>
               <td>{data.type}</td>
-              <td>{data._id}</td>
               <td>
                 <button onClick={() => handleUpdate(data._id)}>Update</button>
                 <button onClick={() => handleDelete(data._id)}>Delete</button>
@@ -100,6 +174,5 @@ const WatchHistory = () => {
     </div>
   );
           }
-};
 
 export default WatchHistory;

@@ -4,11 +4,11 @@ import { useNavigate } from "react-router-dom";
 
 const backendUrl = "http://localhost:3000";
 const Signup = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showDiv, setShowDiv] = useState(false);
   const [result, setResult] = useState("");
-  const [emailError, setEmailError] = useState(false);
+  const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
   const navigate = useNavigate();
@@ -18,23 +18,23 @@ const Signup = () => {
       <h1>Signup</h1>
       <div className="signup-form">
         <div className="subform">
-          <label htmlFor="email">Email: </label>
+          <label htmlFor="username">username: </label>
           <input
             onChange={(e) => {
-              setEmail(e.target.value);
+              setUsername(e.target.value);
             }}
             type="text"
             required
-            name="email"
-            placeholder="Your Email"
-            value={email}
+            name="username"
+            placeholder="Your username"
+            value={username}
           />
-          {emailError && (
+          {usernameError && (
             <p
               className="error-message"
               style={{ textAlign: "center", margin: "10px" }}
             >
-              Email cannot be empty.
+              username cannot be empty.
             </p>
           )}
         </div>
@@ -62,21 +62,21 @@ const Signup = () => {
           id="test"
           onClick={async (e) => {
             try {
-              if (!email) {
-                setEmailError(true);
+              if (!username) {
+                setUsernameError(true);
                 setPasswordError(false);
                 return;
               } else if (!password) {
                 setPasswordError(true);
-                setEmailError(false);
+                setUsernameError(false);
                 return;
               } else {
-                setEmailError(false);
+                setUsernameError(false);
                 setPasswordError(false);
               }
               setShowDiv(false);
               console.log(`${backendUrl}/signup`);
-              console.log(email);
+              console.log(username);
               console.log(password);
               const response = await fetch(`${backendUrl}/signup`, {
                 method: "POST",
@@ -84,7 +84,7 @@ const Signup = () => {
                   "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                  email,
+                  username,
                   password,
                 }),
               });
