@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "/src/components/Signup/Signup.css";
 import { Link, useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
+import axios from 'axios'
 
 
 
@@ -17,31 +18,32 @@ const Login = () => {
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
   const message = params.get('message');
+  
 
   useEffect(() => {
-    // const token = localStorage.getItem("token");
-    // if (token) {
-    //   const decodedToken = jwtDecode(token);
-    //   const currentTime = Date.now() / 1000; // Convert to seconds
-    //   console.log("Decoded token - ", decodedToken)
-    //   console.log("Logged in user - ", decodedToken.data)
-    //   if (decodedToken.exp > currentTime) {
-    //     navigate("/loginsuccessful");
-    //   }
-    // }
-
-    fetch("http://localhost:3000/authenticate", {
-      method: "GET",
-      headers: {
-        "authorization": localStorage.getItem("token")
-      }
-    })
-      .then((response) => {
+    (async () => {
+      try {
+        const response = await axios.get(`${backendUrl}/authenticate`, {
+          headers: {
+            authorization: localStorage.getItem("token")
+          }
+        });
+  
         if (response.status === 200) {
-          navigate("/loginsuccessful")
+          navigate("/loginsuccessful");
         }
-      })
+      } catch(error){
+
+                  console.log(error)
+                  return(<h1>Some error occured, please check console logs for more details</h1>)
+
+      }
+    })();
   }, []);
+  
+
+
+
   return (
     <div id="signup" className="flex-col">
       <h2>{message}</h2>
@@ -106,30 +108,18 @@ const Login = () => {
               }
               setShowDiv(false);
               console.log(`${backendUrl}/login`);
-              console.log(username);
-              console.log(password);
-              const response = await fetch(`${backendUrl}/login`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  username,
-                  password,
-                }),
-              });
-
+              const response = await axios.post(`${backendUrl}/login`,
+              {
+                username,password
+              })
               if (response.status === 200) {
                 // set the state of the user
                 // store the user in localStorage
-                const responseJson = await response.json();
-                localStorage.setItem("token", responseJson.token);
-                localStorage.setItem("User", responseJson.User);
+                localStorage.setItem("token", response.data.token);
                 navigate("/loginsuccessful");
               } else {
-                setResult(await response.text());
+                setResult(response.data);
                 setShowDiv(true);
-                console.log(response);
               }
             } catch (error) {
               console.error("Login failed:", error);

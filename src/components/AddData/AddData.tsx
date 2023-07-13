@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "/src/components/Signup/Signup.css";
 import { useNavigate } from "react-router-dom";
 import jwt from "jsonwebtoken";
+import axios from 'axios'
 
 const backendUrl = "http://localhost:3000";
 const AddData = () => {
@@ -180,23 +181,17 @@ const AddData = () => {
                 const { name, description, watchedon, rating, type } =
                   formValues;
                 console.log(formValues);
-                const response = await fetch(`${backendUrl}/adddata`, {
-                  method: "POST",
+                const response = await axios.post(`${backendUrl}/adddata`,{
+                  name,description,watchedon,rating,type
+                },
+                {
                   headers: {
-                    "Content-Type": "application/json",
-                    "authorization":token
-                  },
-                  body: JSON.stringify({
-                    name,
-                    description,
-                    watchedon,
-                    rating,
-                    type
-                  }),
-                });
+                    authorization: token
+                  }
+                })
 
                 if (response.status === 200) {
-                  setResult(await response.text());
+                  setResult(response.data);
                   setFormValues(initialValues);
                   setShowDiv(true);
                 } 
@@ -204,13 +199,21 @@ const AddData = () => {
                   navigate("/login?message=Session expired, please Login !!")
                 }
                 else {
-                  setResult(await response.text());
+                  setResult(await response.data);
                   setShowDiv(true);
                   console.log(response);
                 }
               }
             } catch (error) {
-              console.error("Signup failed:", error);
+              if(error.response.status === 403)
+              {
+                navigate("/login?message=Session expired, please Login !!")
+              }
+              else
+              {
+                console.log(error)
+                return(<h1>Some error occured, please check console logs for more details</h1>)
+              }
             }
           }}
         >

@@ -1,32 +1,38 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useEffect } from "react";
 import jwtDecode from "jwt-decode";
+const backendUrl = "http://localhost:3000";
+import axios from 'axios'
 
 const LoginSuccessful = () =>
 {
   const navigate = useNavigate();
-    useEffect(() => {
-        // const token = localStorage.getItem("token");
-        // if (token) {
-        //   const decodedToken = jwtDecode(token);
-        //   const currentTime = Date.now() / 1000; // Convert to seconds
-    
-        //   if (decodedToken.exp < currentTime) {
-        //     navigate("/login?message=SessionExpired");
-        //   }
-        // }
-        fetch("http://localhost:3000/authenticate", {
-      method: "GET",
-      headers: {
-        "authorization": localStorage.getItem("token")
-      }
-    })
-      .then((response) => {
-        if (response.status === 403) {
-          navigate("/login?message=Session expired, please Login !!")
-        }
-      })
-      }, [navigate]);
+
+      useEffect(() => {
+        (async () => {
+          try {
+            const response = await axios.get(`${backendUrl}/authenticate`, {
+              headers: {
+                authorization: localStorage.getItem("token")
+              }
+            });
+            console.log(response.status)
+            if (response.status === 403) {
+              navigate("/login?message=Session expired, please Login !!")
+            }
+          } catch (error) {
+            if(error.response.status === 403)
+            {
+              navigate("/login?message=Session expired, please Login !!")
+            }
+            else
+            {
+              console.log(error)
+              return(<h1>Some error occured, please check console logs for more details</h1>)
+            }
+          }
+        })();
+      }, []);
     
     const handleLogout = () => {
         localStorage.clear();

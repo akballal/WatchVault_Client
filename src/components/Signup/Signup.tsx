@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Signup.css";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios'
 
 const backendUrl = "http://localhost:3000";
 const Signup = () => {
@@ -75,34 +76,22 @@ const Signup = () => {
                 setPasswordError(false);
               }
               setShowDiv(false);
-              console.log(`${backendUrl}/signup`);
-              console.log(username);
-              console.log(password);
-              const response = await fetch(`${backendUrl}/signup`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  username,
-                  password,
-                }),
-              });
-              console.log(response.status);
-              console.log(response.statusText);
-              console.log(response.body);
+              const response = await axios.post(`${backendUrl}/signup`, {
+                username,password
+              })
 
               if (response.status === 200) {
                 navigate('/signupsuccessful');
               }
               else
               {
-                setResult(await response.text());
+                setResult(await response.data);
                 setShowDiv(true);
-                console.log(response);
               }
-            } catch (error) {
-              console.error("Signup failed:", error);
+            } catch(error){
+                        console.log(error)
+                        return(<h1>Some error occured, please check console logs for more details</h1>)
+              
             }
           }}
         >

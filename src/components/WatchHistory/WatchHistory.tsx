@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import "./WatchHistory.css";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import axios from 'axios';
+
 const backendUrl = "http://localhost:3000";
 
 const WatchHistory = () => {
@@ -15,22 +17,35 @@ const WatchHistory = () => {
   const token = localStorage.getItem("token");
   
   const init = async () => {
-    const response = await fetch(`${backendUrl}/alldata`, {
-      method: "GET",
+    try{
+    const response = await axios.get(`${backendUrl}/alldata`,{
       headers: {
-        "authorization":token
-      },
-    });
-
-    const json = await response.json();
-    console.log("json problems => " + json.problems);
-    setallData(json.problems);
-    console.log("json => " + json);
-    console.log(response.status)
+        authorization: token
+      }
+    })
+    console.log('JSON object:', response.data.problems);
+    setallData(response.data.problems);
+    console.log('status code: ' ,response.status)
+    if(response.status === 401)
+    {
+      return (<h1>Unauthorized</h1>)
+    }
     if (response.status === 403) {
       navigate("/login?message=Session expired, please Login !!"); // Redirect to login page
       return;
     }
+  }
+  catch(error){
+    if(error.response.status === 403)
+            {
+              navigate("/login?message=Session expired, please Login !!")
+            }
+            else
+            {
+              console.log(error)
+              return(<h1>Some error occured, please check console logs for more details</h1>)
+            }
+  }
   };
 
   useEffect(() => {
@@ -45,16 +60,14 @@ const WatchHistory = () => {
   const handleDelete = async (id: any) => {
     console.log("Delete data with id:", id);
     try {
-      const response = await fetch(`${backendUrl}/deleterecord`, {
-        method: "DELETE",
+      const response = await axios.delete(`${backendUrl}/deleterecord`,
+      {
         headers: {
-          "Content-Type": "application/json",
-          "authorization":token
-        },
-        body: JSON.stringify({
-          id,
-        }),
-      });
+          authorization: token,
+          id
+        }
+      }
+      )
       if(response.status === 403) {
         navigate("/login?message=Session expired, please Login !!")
       }
@@ -62,8 +75,16 @@ const WatchHistory = () => {
       {
         setallData(prevData => prevData.filter(data => data._id !== id));
       }
-    } catch (error) {
-      console.error("Error in deleting record: ", error);
+    } catch(error){
+      if(error.response.status === 403)
+              {
+                navigate("/login?message=Session expired, please Login !!")
+              }
+              else
+              {
+                console.log(error)
+                return(<h1>Some error occured, please check console logs for more details</h1>)
+              }
     }
   };
 
@@ -84,35 +105,51 @@ const WatchHistory = () => {
     }
     setEmptystartdate(false);
     setEmptyenddate(false);
-    const response = await fetch(`${backendUrl}/filterdata`, {
-      method: "POST",
+    try{
+    const response = await axios.post(`${backendUrl}/filterdata`,{
+      filterType : 'daterange', startDate, endDate
+    },
+    {
       headers: {
-        "Content-Type": "application/json",
-        "authorization":token
-      },
-      body: JSON.stringify({
-        filterType : 'daterange', startDate, endDate
-      }),
-    });
-    const json = await response.json();
-    console.log("json problems => " + json.problems);
-    setallData(json.problems);
-    console.log("json => " + json);
+        authorization: token
+      }
+    })
+    setallData(response.data.problems); 
+  }catch(error){
+    if(error.response.status === 403)
+            {
+              navigate("/login?message=Session expired, please Login !!")
+            }
+            else
+            {
+              console.log(error)
+              return(<h1>Some error occured, please check console logs for more details</h1>)
+            }
+  }
   };
 
   const clearFilters = async () => {
     setStartDate(null)
     setEndDate(null)
-    const response = await fetch(`${backendUrl}/alldata`, {
-      method: "GET",
+    try{
+    const response = await axios.get(`${backendUrl}/alldata`,
+    {
       headers: {
-        "authorization":token
-      },
-    });
-
-    const json = await response.json();
-    console.log("json problems => " + json.problems);
-    setallData(json.problems);
+           authorization:token
+         }
+    })
+    setallData(response.data.problems);
+  }catch(error){
+    if(error.response.status === 403)
+            {
+              navigate("/login?message=Session expired, please Login !!")
+            }
+            else
+            {
+              console.log(error)
+              return(<h1>Some error occured, please check console logs for more details</h1>)
+            }
+  }
     }
 
   if(allData.length ===  0)

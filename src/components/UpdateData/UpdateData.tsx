@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "/src/components/Signup/Signup.css";
 import { useLocation, useNavigate,  } from "react-router-dom";
 import jwt from 'jsonwebtoken';
+import axios from 'axios'
 
 const backendUrl = "http://localhost:3000";
 const UpdateData = () => {
@@ -196,31 +197,39 @@ const UpdateData = () => {
                 else{
                   const {name, description, watchedon, rating, type} = formValues
                   console.log(formValues)
-                const response = await fetch(`${backendUrl}/updaterecord`, {
-                method: "PUT",
+                  
+              const response = await axios.put(`${backendUrl}/updaterecord`,
+              {
+                id,name,description,watchedon,rating,type,user
+              },
+              {
                 headers: {
-                  "Content-Type": "application/json",
-                  "authorization":token
-                },
-                body: JSON.stringify({
-                  id,name,description,watchedon,rating,type,user
-                }),
-              });
+                  authorization: token
+                }
+              })
 
               if (response.status === 200) {
-                setResult(await response.text());
+                setResult(await response.data);
                 setShowDiv(true);
                 
               } else if(response.status === 403) {
                 navigate("/login?message=Session expired, please Login !!")
               }
               else {
-                setResult(await response.text());
+                setResult(await response.data);
                 setShowDiv(true);
                 console.log(response);
               }
             }} catch (error) {
-              console.error("Signup failed:", error);
+              if(error.response.status === 403)
+              {
+                navigate("/login?message=Session expired, please Login !!")
+              }
+              else
+              {
+                console.log(error)
+                return(<h1>Some error occured, please check console logs for more details</h1>)
+              }
             }
           }}
         >
