@@ -25,20 +25,24 @@ const UpdateData = () => {
 
   const init = async () => {
     try {
-      const currentData = await fetch(`${backendUrl}/getrecord`, {
-        method: "get",
+      const currentData =  await axios.get(`${backendUrl}/getrecord`,
+      {
         headers: {
-          "Content-Type": "application/json",
-          "id":id,
-          "authorization":token
-        },
-      });
-      console.log("current data => ", currentData)
-      const json = await currentData.json();
-       console.log(json.result);
-       setFormValues(json.result);
+          id,
+        authorization : localStorage.getItem("token")
+        }
+      })
+        setFormValues(currentData.data.result);
     } catch (error) {
-      console.error('Error connecting to MongoDB:', error);
+      if(error.response.status === 403)
+      {
+        navigate("/login?message=Session expired, please Login !!")
+      }
+      else
+      {
+        console.log(error)
+        return(<h1>Some error occured, please check console logs for more details</h1>)
+      }
     }
   };
 
