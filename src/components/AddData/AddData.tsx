@@ -199,7 +199,11 @@ const AddData = () => {
                   setResult(await response.text());
                   setFormValues(initialValues);
                   setShowDiv(true);
-                } else {
+                } 
+                else if(response.status === 403) {
+                  navigate("/login?message=Session expired, please Login !!")
+                }
+                else {
                   setResult(await response.text());
                   setShowDiv(true);
                   console.log(response);

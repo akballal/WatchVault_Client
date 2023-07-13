@@ -211,7 +211,10 @@ const UpdateData = () => {
                 setResult(await response.text());
                 setShowDiv(true);
                 
-              } else {
+              } else if(response.status === 403) {
+                navigate("/login?message=Session expired, please Login !!")
+              }
+              else {
                 setResult(await response.text());
                 setShowDiv(true);
                 console.log(response);

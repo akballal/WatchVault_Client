@@ -10,6 +10,8 @@ const WatchHistory = () => {
   const [allData, setallData] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [emptystartdate, setEmptystartdate] = useState(false);
+  const [emptyenddate, setEmptyenddate] = useState(false);
   const token = localStorage.getItem("token");
   
   const init = async () => {
@@ -26,7 +28,7 @@ const WatchHistory = () => {
     console.log("json => " + json);
     console.log(response.status)
     if (response.status === 403) {
-      navigate("/login"); // Redirect to login page
+      navigate("/login?message=Session expired, please Login !!"); // Redirect to login page
       return;
     }
   };
@@ -53,9 +55,8 @@ const WatchHistory = () => {
           id,
         }),
       });
-      if (response.status !== 200) 
-      {
-        console.log(response);
+      if(response.status === 403) {
+        navigate("/login?message=Session expired, please Login !!")
       }
       else
       {
@@ -69,6 +70,20 @@ const WatchHistory = () => {
   const handleFilters = async () => {
     console.log(startDate)
     console.log(endDate)
+    if(startDate === null)
+    {
+      setEmptystartdate(true)
+      setEmptyenddate(false)
+      return;
+    }
+    if(endDate === null)
+    {
+      setEmptyenddate(true)
+      setEmptystartdate(false)
+      return;
+    }
+    setEmptystartdate(false);
+    setEmptyenddate(false);
     const response = await fetch(`${backendUrl}/filterdata`, {
       method: "POST",
       headers: {
@@ -84,6 +99,21 @@ const WatchHistory = () => {
     setallData(json.problems);
     console.log("json => " + json);
   };
+
+  const clearFilters = async () => {
+    setStartDate(null)
+    setEndDate(null)
+    const response = await fetch(`${backendUrl}/alldata`, {
+      method: "GET",
+      headers: {
+        "authorization":token
+      },
+    });
+
+    const json = await response.json();
+    console.log("json problems => " + json.problems);
+    setallData(json.problems);
+    }
 
   if(allData.length ===  0)
   {
@@ -106,6 +136,11 @@ const WatchHistory = () => {
             placeholder="Movie/Series description"
           /></label>
           <button onClick={handleFilters}>Apply Filters</button>
+          <button onClick={() =>{
+            clearFilters()
+          }}>
+            Clear Filters
+            </button>
           </tr>
           <tr>
             <th>Sr.No</th>
@@ -144,6 +179,32 @@ const WatchHistory = () => {
             placeholder="Movie/Series description"
           /></label>
           <button onClick={handleFilters}>Apply Filters</button>
+          
+          <button onClick={() =>{
+            clearFilters()
+          }}>
+            Clear Filters
+            </button>
+          </tr>
+          <tr>
+          {emptystartdate && (
+            <p
+              className="error-message"
+              style={{ textAlign: "center", margin: "10px" }}
+            >
+              Please provide start date.
+            </p>
+          )}
+          </tr>
+          <tr>
+          {emptyenddate && (
+            <p
+              className="error-message"
+              style={{ textAlign: "center", margin: "10px" }}
+            >
+              Please provide end date.
+            </p>
+          )}
           </tr>
           <tr>
             <th>Sr.No</th>

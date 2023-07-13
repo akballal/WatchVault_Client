@@ -15,21 +15,36 @@ const Login = () => {
   const [passwordError, setPasswordError] = useState(false);
   const [user, setUser] = useState();
   const navigate = useNavigate();
+  const params = new URLSearchParams(location.search);
+  const message = params.get('message');
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const decodedToken = jwtDecode(token);
-      const currentTime = Date.now() / 1000; // Convert to seconds
+    // const token = localStorage.getItem("token");
+    // if (token) {
+    //   const decodedToken = jwtDecode(token);
+    //   const currentTime = Date.now() / 1000; // Convert to seconds
+    //   console.log("Decoded token - ", decodedToken)
+    //   console.log("Logged in user - ", decodedToken.data)
+    //   if (decodedToken.exp > currentTime) {
+    //     navigate("/loginsuccessful");
+    //   }
+    // }
 
-      if (decodedToken.exp > currentTime) {
-        navigate("/loginsuccessful");
+    fetch("http://localhost:3000/authenticate", {
+      method: "GET",
+      headers: {
+        "authorization": localStorage.getItem("token")
       }
-    }
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          navigate("/loginsuccessful")
+        }
+      })
   }, []);
-  
   return (
     <div id="signup" className="flex-col">
+      <h2>{message}</h2>
       <h1>Login</h1>
       <div className="signup-form">
         <div className="subform">
@@ -126,17 +141,16 @@ const Login = () => {
         <br></br>
         <br></br>
         <div>
-      <Link to="/">Homepage</Link>{' '}
-      <Link to="/signup">Signup</Link>
-    </div>
+          <Link to="/">Homepage</Link>{' '}
+          <Link to="/signup">Signup</Link>
+        </div>
       </div>
       {showDiv && (
         <div style={{ textAlign: "center", margin: "10px" }}>{result}</div>
       )}
     </div>
   );
+
 };
 
 export default Login;
-
-// neetcode1@gmail.com

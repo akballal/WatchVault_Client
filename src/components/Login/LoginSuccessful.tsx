@@ -4,18 +4,30 @@ import jwtDecode from "jwt-decode";
 
 const LoginSuccessful = () =>
 {
+  const navigate = useNavigate();
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (token) {
-          const decodedToken = jwtDecode(token);
-          const currentTime = Date.now() / 1000; // Convert to seconds
+        // const token = localStorage.getItem("token");
+        // if (token) {
+        //   const decodedToken = jwtDecode(token);
+        //   const currentTime = Date.now() / 1000; // Convert to seconds
     
-          if (decodedToken.exp < currentTime) {
-            navigate("/login");
-          }
+        //   if (decodedToken.exp < currentTime) {
+        //     navigate("/login?message=SessionExpired");
+        //   }
+        // }
+        fetch("http://localhost:3000/authenticate", {
+      method: "GET",
+      headers: {
+        "authorization": localStorage.getItem("token")
+      }
+    })
+      .then((response) => {
+        if (response.status === 403) {
+          navigate("/login?message=Session expired, please Login !!")
         }
-      }, []);
-    const navigate = useNavigate();
+      })
+      }, [navigate]);
+    
     const handleLogout = () => {
         localStorage.clear();
         navigate('/login');
