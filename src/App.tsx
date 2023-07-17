@@ -12,11 +12,15 @@ import SignupSuccessful from "./components/Signup/SignupSuccessful";
 import LoginSuccessful from "./components/Login/LoginSuccessful";
 import AddData from "./components/AddData/AddData";
 import UpdateData from "./components/UpdateData/UpdateData";
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+
 import "./App.css";
-function App() {
+function App({ children }) {
   return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      { children }
     <BrowserRouter>
-      {/* <Navbar /> */}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<Signup />} />
@@ -28,6 +32,7 @@ function App() {
         <Route path="/updatedata" element={<UpdateData/>} />
       </Routes>
     </BrowserRouter>
+    </LocalizationProvider>
   );
 }
 

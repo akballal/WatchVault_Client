@@ -42,106 +42,6 @@ const Login = () => {
     })();
   }, []);
   
-
-
-
-  // return (
-  //   <div id="signup" className="flex-col">
-  //     <h2>{message}</h2>
-  //     <h1>Login</h1>
-  //     <div className="signup-form">
-  //       <div className="subform">
-  //         <label htmlFor="username">username: </label>
-  //         <input
-  //           onChange={(e) => {
-  //             setUsername(e.target.value);
-  //           }}
-  //           type="text"
-  //           required
-  //           name="username"
-  //           placeholder="Your username"
-  //           value={username}
-  //         />
-  //         {usernameError && (
-  //           <p
-  //             className="error-message"
-  //             style={{ textAlign: "center", margin: "10px" }}
-  //           >
-  //             username cannot be empty.
-  //           </p>
-  //         )}
-  //       </div>
-
-  //       <div className="subform">
-  //         <label htmlFor="password">Password: </label>
-  //         <input
-  //           onChange={(e) => setPassword(e.target.value)}
-  //           type="password"
-  //           name="password"
-  //           placeholder="Your Password"
-  //           value={password}
-  //         />
-  //         {passwordError && (
-  //           <p
-  //             className="error-message"
-  //             style={{ textAlign: "center", margin: "10px" }}
-  //           >
-  //             Password cannot be empty.
-  //           </p>
-  //         )}
-  //       </div>
-  //       <button
-  //         type="submit"
-  //         id="test"
-  //         onClick={async (e) => {
-  //           try {
-  //             if (!username) {
-  //               setUsernameError(true);
-  //               setPasswordError(false);
-  //               return;
-  //             } else if (!password) {
-  //               setPasswordError(true);
-  //               setUsernameError(false);
-  //               return;
-  //             } else {
-  //               setUsernameError(false);
-  //               setPasswordError(false);
-  //             }
-  //             setShowDiv(false);
-  //             console.log(`${backendUrl}/login`);
-  //             const response = await axios.post(`${backendUrl}/login`,
-  //             {
-  //               username,password
-  //             })
-  //             if (response.status === 200) {
-  //               // set the state of the user
-  //               // store the user in localStorage
-  //               localStorage.setItem("token", response.data.token);
-  //               navigate("/loginsuccessful");
-  //             } else {
-  //               setResult(response.data);
-  //               setShowDiv(true);
-  //             }
-  //           } catch (error) {
-  //             console.error("Login failed:", error);
-  //           }
-  //         }}
-  //       >
-  //         LOGIN
-  //       </button>
-  //       <br></br>
-  //       <br></br>
-  //       <div>
-  //         <Link to="/">Homepage</Link>{' '}
-  //         <Link to="/signup">Signup</Link>
-  //       </div>
-  //     </div>
-  //     {showDiv && (
-  //       <div style={{ textAlign: "center", margin: "10px" }}>{result}</div>
-  //     )}
-  //   </div>
-  // );
-
   return (
 
     <div>
@@ -188,6 +88,7 @@ const Login = () => {
           )}
           <br /><br />
 
+          <center>
           <Button
             size={"large"}
             variant="contained"
@@ -224,7 +125,7 @@ const Login = () => {
                           setShowDiv(true);
                         }
             }}
-          > Login</Button>
+          > Login</Button></center>
           <br></br>
          <br></br>
         <div style={{

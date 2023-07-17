@@ -29,7 +29,7 @@ const Signup = () => {
       </div>
 
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <Card varint={"outlined"} style={{ width: 400, padding: 20 }}>
+        <Card varint={"outlined"} style={{ width: 400, padding: 20 }} >
           <TextField
             required
             onChange={(e) => {
@@ -60,6 +60,7 @@ const Signup = () => {
           )}
           <br /><br />
 
+          <center>
           <Button
             size={"large"}
             variant="contained"
@@ -97,7 +98,7 @@ const Signup = () => {
 
               }
             }}
-          > Signup</Button>
+          > Signup</Button></center>  
           <div>
           {showDiv && (
         <div style={{ textAlign: "center", margin: "10px" }}>{result}</div>
