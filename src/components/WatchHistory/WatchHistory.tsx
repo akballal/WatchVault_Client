@@ -4,7 +4,9 @@ import "./WatchHistory.css";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, TableSortLabel } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteOutlinedIcon from '@mui/icons-material/Delete';
 
 const backendUrl = "http://localhost:3000";
 
@@ -15,6 +17,9 @@ const WatchHistory = () => {
   const [endDate, setEndDate] = useState(null);
   const [emptyStartDate, setEmptyStartDate] = useState(false);
   const [emptyEndDate, setEmptyEndDate] = useState(false);
+  const [sortBy, setSortBy] = useState('');
+  const [sortOrder, setSortOrder] = useState('');
+
   const token = localStorage.getItem("token");
 
   const init = async () => {
@@ -133,7 +138,33 @@ const WatchHistory = () => {
     }
   };
 
-  if (allData.length === 0) {
+  const handleSort = (field) => {
+    if (field === sortBy) {
+      // Toggle the sort order
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      // Set the new sort field and default sort order to ascending
+      setSortBy(field);
+      setSortOrder('asc');
+    }
+  };
+
+  const sortedData = () => {
+    if (sortBy) {
+      return allData.sort((a, b) => {
+        if (a[sortBy] < b[sortBy]) {
+          return sortOrder === 'asc' ? -1 : 1;
+        }
+        if (a[sortBy] > b[sortBy]) {
+          return sortOrder === 'asc' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return allData;
+  };
+
+  if (sortedData().length === 0) {
     return (
       <div>
         <TableContainer component={Paper}>
@@ -163,10 +194,62 @@ const WatchHistory = () => {
                   <Button variant="contained" onClick={clearFilters}>Clear Filters</Button>
                 </TableCell>
               </TableRow>
+              {emptyStartDate && (
+                <TableRow>
+                  <TableCell colSpan={6}>
+                    <p className="error-message" style={{ textAlign: "center", margin: "10px" }}>
+                      Please provide a start date.
+                    </p>
+                  </TableCell>
+                </TableRow>
+              )}
+              {emptyEndDate && (
+                <TableRow>
+                  <TableCell colSpan={6}>
+                    <p className="error-message" style={{ textAlign: "center", margin: "10px" }}>
+                      Please provide an end date.
+                    </p>
+                  </TableCell>
+                </TableRow>
+              )}
               <TableRow>
-                <TableCell colSpan={6}>
-                  <Link to="/adddata">Add Data</Link>
+                <TableCell><b>Sr.No</b></TableCell>
+                <TableCell>
+                  <Button size="small" variant="text" onClick={() => handleSort('name')}>
+                    <TableSortLabel active={sortBy === 'name'} direction={sortOrder}>
+                      Name
+                    </TableSortLabel>
+                  </Button>
                 </TableCell>
+                <TableCell>
+                  <Button size="small" variant="text" onClick={() => handleSort('description')}>
+                    <TableSortLabel active={sortBy === 'description'} direction={sortOrder}>
+                      Description
+                    </TableSortLabel>
+                  </Button>
+                </TableCell>
+                <TableCell>
+                  <Button size="small" variant="text" onClick={() => handleSort('watchedon')}>
+                    <TableSortLabel active={sortBy === 'watchedon'} direction={sortOrder}>
+                      Watched On
+                    </TableSortLabel>
+                  </Button>
+                </TableCell>
+                <TableCell>
+                  <Button size="small" variant="text" onClick={() => handleSort('rating')}>
+                    <TableSortLabel active={sortBy === 'rating'} direction={sortOrder}>
+                      Rating
+                    </TableSortLabel>
+                  </Button>
+                </TableCell>
+                <TableCell>
+                  <Button size="small" variant="text" onClick={() => handleSort('type')}>
+                    <TableSortLabel active={sortBy === 'type'} direction={sortOrder}>
+                      Type
+                    </TableSortLabel>
+                  </Button>
+                </TableCell>
+                <TableCell><b>Actions</b></TableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -223,15 +306,45 @@ const WatchHistory = () => {
               </TableRow>
             )}
             <TableRow>
-              <TableCell>Sr.No</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Watched On</TableCell>
-              <TableCell>Rating</TableCell>
-              <TableCell>Type</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell><Button size="small" variant="text">Sr.No</Button></TableCell>
+              <TableCell>
+                <Button size="small" variant="text" onClick={() => handleSort('name')}>
+                  <TableSortLabel active={sortBy === 'name'} direction={sortOrder}>
+                    Name
+                  </TableSortLabel>
+                </Button>
+              </TableCell>  
+              <TableCell>
+                <Button size="small" variant="text" onClick={() => handleSort('description')}>
+                  <TableSortLabel active={sortBy === 'description'} direction={sortOrder}>
+                    Description
+                  </TableSortLabel>
+                </Button>
+              </TableCell>
+              <TableCell>
+                <Button size="small" variant="text" onClick={() => handleSort('watchedon')}>
+                  <TableSortLabel active={sortBy === 'watchedon'} direction={sortOrder}>
+                    Watched On
+                  </TableSortLabel>
+                </Button>
+              </TableCell>
+              <TableCell>
+                <Button size="small" variant="text" onClick={() => handleSort('rating')}>
+                  <TableSortLabel active={sortBy === 'rating'} direction={sortOrder}>
+                    Rating
+                  </TableSortLabel>
+                </Button>
+              </TableCell>
+              <TableCell>
+                <Button size="small" variant="text" onClick={() => handleSort('type')}>
+                  <TableSortLabel active={sortBy === 'type'} direction={sortOrder}>
+                    Type
+                  </TableSortLabel>
+                </Button>
+              </TableCell>
+              <TableCell><Button size="small" variant="text">Actions</Button></TableCell>
             </TableRow>
-            {allData.map((data, index) => (
+            {sortedData().map((data, index) => (
               <TableRow key={index}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{data.name}</TableCell>
@@ -240,8 +353,12 @@ const WatchHistory = () => {
                 <TableCell>{data.rating}</TableCell>
                 <TableCell>{data.type}</TableCell>
                 <TableCell>
-                  <Button variant="contained" onClick={() => handleUpdate(data._id)}>Update</Button>
-                  <Button variant="contained" onClick={() => handleDelete(data._id)}>Delete</Button>
+                  <Button size="small" variant="outlined" onClick={() => handleUpdate(data._id)}>
+                    <EditIcon />
+                  </Button>
+                  <Button size="small" variant="outlined" onClick={() => handleDelete(data._id)}>
+                    <DeleteOutlinedIcon />
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
