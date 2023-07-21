@@ -14,12 +14,14 @@ import AddData from "./components/AddData/AddData";
 import UpdateData from "./components/UpdateData/UpdateData";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import 'dayjs/locale/en-in';
+
 
 import "./App.css";
 function App({ children }) {
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      { children }
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-in">
+      {children}
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -33,6 +35,7 @@ function App({ children }) {
       </Routes>
     </BrowserRouter>
     </LocalizationProvider>
+    
   );
 }
 

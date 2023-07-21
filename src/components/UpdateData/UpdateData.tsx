@@ -14,7 +14,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { DesktopDateTimePicker } from "@mui/x-date-pickers";
+import { DatePicker, DesktopDateTimePicker } from "@mui/x-date-pickers";
 
 const backendUrl = "http://localhost:3000";
 const UpdateData = () => {
@@ -48,10 +48,9 @@ const UpdateData = () => {
           authorization: localStorage.getItem("token"),
         },
       });
-      console.log(currentData.data.result.watchedon);
       setName(currentData.data.result.name);
       setDescription(currentData.data.result.description);
-     // setWatchedon(currentData.data.result.watchedon);
+      setWatchedon();
       setType(currentData.data.result.type);
       setRating(currentData.data.result.rating);
     } catch (error) {
@@ -135,7 +134,7 @@ const UpdateData = () => {
             {formErrors.description}
           </p>
 
-          <DesktopDateTimePicker
+          <DatePicker
             label="Watched on"
             onChange={(newValue) => setWatchedon(newValue)}
             value={watchedon}

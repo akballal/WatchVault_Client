@@ -15,10 +15,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { DesktopDateTimePicker } from "@mui/x-date-pickers";
+import { DatePicker, DesktopDateTimePicker } from "@mui/x-date-pickers";
 
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import 'dayjs/locale/en-in'; // Import the English - India locale data
 
+dayjs.locale('en-in'); // Set the locale to English - India
 
+// dayjs.extend(utc);
+// dayjs.extend(timezone);
+// dayjs.tz.setDefault('Asia/Kolkata');
 
 const backendUrl = "http://localhost:3000";
 
@@ -117,11 +125,15 @@ const AddData = () => {
             {formErrors.description}
           </p>
 
-          <DesktopDateTimePicker
-            timezone="Asia/Kolkata"
+          <DatePicker
             label="Watched on"
-            onChange={(newValue) => setWatchedon(newValue)}
+            onChange={(newValue) => {
+              console.log(newValue.$d.getDate())
+              console.log(newValue.$d.toDateString())
+              setWatchedon(newValue)}}
             value={watchedon}
+            format="YYYY-MM-DD"
+            disableFuture
           />
           <p style={{ textAlign: "center", margin: "10px", color: "red" }}>
             {formErrors.watchedon}
@@ -185,6 +197,7 @@ const AddData = () => {
                   console.log(rating)
                   return;
                 } else {
+                  console.log(watchedon)
                   const response = await axios.post(
                     `${backendUrl}/adddata`,
                     {
@@ -202,6 +215,7 @@ const AddData = () => {
                   );
 
                   if (response.status === 200) {
+                    setFormErrors(fieldErrors);
                     setResult(response.data);
                     setShowDiv(true);
                   } else if (response.status === 403) {
