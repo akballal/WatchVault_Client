@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "/src/components/Signup/Signup.css";
 import { useNavigate } from "react-router-dom";
-import jwt from "jsonwebtoken";
 import axios from 'axios';
 import {
   Button,
@@ -15,18 +14,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { DatePicker, DesktopDateTimePicker } from "@mui/x-date-pickers";
 
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
-import 'dayjs/locale/en-in'; // Import the English - India locale data
+import tz from 'dayjs/plugin/timezone';
+import { DateTimePicker } from "@mui/x-date-pickers";
 
-dayjs.locale('en-in'); // Set the locale to English - India
+dayjs.extend(utc);
+dayjs.extend(tz);
 
-// dayjs.extend(utc);
-// dayjs.extend(timezone);
-// dayjs.tz.setDefault('Asia/Kolkata');
 
 const backendUrl = "http://localhost:3000";
 
@@ -84,6 +80,7 @@ const AddData = () => {
     return errors;
   };
 
+  
   return (
     <>
       <div style={{
@@ -100,7 +97,6 @@ const AddData = () => {
       <div style={{ display: "flex", justifyContent: "center" ,paddingBlock:10}}>
         <Card variant="outlined" style={{ width: 400, padding: 20 }}>
           <TextField
-            required
             onChange={(e) => setName(e.target.value)}
             fullWidth={true}
             label="Name"
@@ -113,7 +109,6 @@ const AddData = () => {
           </p>
 
           <TextField
-            required
             onChange={(e) => setDescription(e.target.value)}
             fullWidth={true}
             name="description"
@@ -125,16 +120,18 @@ const AddData = () => {
             {formErrors.description}
           </p>
 
-          <DatePicker
-            label="Watched on"
-            onChange={(newValue) => {
-              console.log(newValue.$d.getDate())
-              console.log(newValue.$d.toDateString())
-              setWatchedon(newValue)}}
-            value={watchedon}
-            format="YYYY-MM-DD"
-            disableFuture
+          <DateTimePicker
+          label="Watched On"
+          timezone="Asia/Kolkata"
+          ampm={false}
+          disableFuture
+          onChange={(newValue) => {
+            const date = newValue.$d
+            const localDate = dayjs(date).format("YYYY-MM-DD HH:mm:ss")
+            setWatchedon(localDate)
+          }}
           />
+
           <p style={{ textAlign: "center", margin: "10px", color: "red" }}>
             {formErrors.watchedon}
           </p>
@@ -188,6 +185,7 @@ const AddData = () => {
             variant="contained"
             onClick={async (e) => {
               try {
+                console.log("Watched On => ", watchedon)
                 e.preventDefault();
                 const fieldErrors = validate(formValues);
                 const token = localStorage.getItem("token");
