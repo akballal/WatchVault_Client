@@ -14,7 +14,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { DatePicker, DesktopDateTimePicker } from "@mui/x-date-pickers";
+import { DatePicker, DateTimePicker, DesktopDateTimePicker } from "@mui/x-date-pickers";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import tz from 'dayjs/plugin/timezone';
+dayjs.extend(utc);
+dayjs.extend(tz);
 
 const backendUrl = "http://localhost:3000";
 const UpdateData = () => {
@@ -48,12 +53,17 @@ const UpdateData = () => {
           authorization: localStorage.getItem("token"),
         },
       });
+
+      //const watchedonDate = currentData.data.result.watchedon.toISOString(); // Convert Date object to string
+      const watchedonDayjs = dayjs.utc(currentData.data.result.watchedon); // Convert to dayjs UTC object
+
       setName(currentData.data.result.name);
       setDescription(currentData.data.result.description);
-      setWatchedon();
+      setWatchedon(watchedonDayjs);
       setType(currentData.data.result.type);
       setRating(currentData.data.result.rating);
     } catch (error) {
+      console.log(error)
       if (error.response.status === 403) {
         navigate("/login?message=Session expired, please Login !!");
       } else {
@@ -134,7 +144,7 @@ const UpdateData = () => {
             {formErrors.description}
           </p>
 
-          <DatePicker
+          <DateTimePicker
             label="Watched on"
             onChange={(newValue) => setWatchedon(newValue)}
             value={watchedon}
