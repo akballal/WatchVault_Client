@@ -4,21 +4,25 @@ import "./WatchHistory.css";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, TableSortLabel } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, TableSortLabel, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlinedIcon from '@mui/icons-material/Delete';
+import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+import dayjs from "dayjs";
 
 const backendUrl = "http://localhost:3000";
 
 const WatchHistory = () => {
   const navigate = useNavigate();
   const [allData, setAllData] = useState([]);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  // const [startDate, setStartDate] = useState(null);
+  // const [endDate, setEndDate] = useState(null);
   const [emptyStartDate, setEmptyStartDate] = useState(false);
   const [emptyEndDate, setEmptyEndDate] = useState(false);
   const [sortBy, setSortBy] = useState('');
   const [sortOrder, setSortOrder] = useState('');
+  const [rangevalue, setRangevalue] = useState(null);
+  
 
   const token = localStorage.getItem("token");
 
@@ -83,8 +87,15 @@ const WatchHistory = () => {
   };
 
   const handleFilters = async () => {
-    console.log(startDate);
-    console.log(endDate);
+    // console.log(startDate);
+    // console.log(endDate);
+    console.log(rangevalue)
+    console.log(dayjs(rangevalue[0].$d).format("YYYY-MM-DD"))
+    console.log(dayjs(rangevalue[1].$d).format("YYYY-MM-DD"))
+
+    const startDate = dayjs(rangevalue[0].$d).format("YYYY-MM-DD");
+    const endDate = dayjs(rangevalue[1].$d).format("YYYY-MM-DD");
+
     if (startDate === null) {
       setEmptyStartDate(true);
       setEmptyEndDate(false);
@@ -119,8 +130,7 @@ const WatchHistory = () => {
   };
 
   const clearFilters = async () => {
-    setStartDate(null);
-    setEndDate(null);
+    setRangevalue(null)
     try {
       const response = await axios.get(`${backendUrl}/alldata`, {
         headers: {
@@ -170,7 +180,7 @@ const WatchHistory = () => {
         <TableContainer component={Paper}>
           <Table>
             <TableBody>
-              <TableRow>
+              {/* <TableRow>
                 <TableCell>
                   <TextField
                     onChange={(e) => { setStartDate(e.target.value) }}
@@ -193,7 +203,27 @@ const WatchHistory = () => {
                 <TableCell>
                   <Button variant="contained" onClick={clearFilters}>Clear Filters</Button>
                 </TableCell>
-              </TableRow>
+              </TableRow> */}
+              <TableRow>
+              <TableCell>
+            <div >
+            <DateRangePicker disableFuture localeText={{ start: 'Start-Date', end: 'End-Date' }} autoFocus={undefined} 
+            onChange={(newValue) => 
+              {
+                console.log(newValue)
+                setRangevalue(newValue)
+              }
+            }
+            />
+            </div>
+            </TableCell>
+            <TableCell>
+                <Button variant="contained" size="small" style={{ whiteSpace: 'nowrap' }} onClick={handleFilters}>Apply Filters</Button>
+              </TableCell>
+              <TableCell>
+                <Button variant="contained" size="small" style={{ whiteSpace: 'nowrap' }} onClick={clearFilters}>Clear Filters</Button>
+              </TableCell>
+            </TableRow>
               {emptyStartDate && (
                 <TableRow>
                   <TableCell colSpan={6}>
@@ -212,7 +242,8 @@ const WatchHistory = () => {
                   </TableCell>
                 </TableRow>
               )}
-              <TableRow>
+  
+              {/* <TableRow>
                 <TableCell><b>Sr.No</b></TableCell>
                 <TableCell>
                   <Button size="small" variant="text" onClick={() => handleSort('name')}>
@@ -250,10 +281,20 @@ const WatchHistory = () => {
                   </Button>
                 </TableCell>
                 <TableCell><b>Actions</b></TableCell>
-              </TableRow>
+              </TableRow> */}
             </TableBody>
           </Table>
         </TableContainer>
+        <div style={{
+        paddingTop: 90,
+        marginBottom: 10,
+        display: "flex",
+        justifyContent: "center"
+      }}>
+        <Typography variant="h6">
+          Seems you didn't watch any movie or series in provided time-range, did you?
+        </Typography>
+      </div>
       </div>
     );
   }
@@ -264,6 +305,26 @@ const WatchHistory = () => {
         <Table>
           <TableBody>
             <TableRow>
+              <TableCell>
+            <div >
+            <DateRangePicker disableFuture localeText={{ start: 'Start-Date', end: 'End-Date' }} autoFocus={undefined} 
+            onChange={(newValue) => 
+              {
+                console.log(newValue)
+                setRangevalue(newValue)
+              }
+            }
+            />
+            </div>
+            </TableCell>
+            <TableCell>
+                <Button variant="contained" size="small" style={{ whiteSpace: 'nowrap' }} onClick={handleFilters}>Apply Filters</Button>
+              </TableCell>
+              <TableCell>
+                <Button variant="contained" size="small" style={{ whiteSpace: 'nowrap' }} onClick={clearFilters}>Clear Filters</Button>
+              </TableCell>
+            </TableRow>
+            {/* <TableRow>
               <TableCell>
                 <TextField
                   onChange={(e) => { setStartDate(e.target.value) }}
@@ -286,7 +347,7 @@ const WatchHistory = () => {
               <TableCell>
                 <Button variant="contained" onClick={clearFilters}>Clear Filters</Button>
               </TableCell>
-            </TableRow>
+            </TableRow> */}
             {emptyStartDate && (
               <TableRow>
                 <TableCell colSpan={6}>
