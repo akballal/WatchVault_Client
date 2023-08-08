@@ -17,10 +17,16 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 
 import "./App.css";
+import Appbar from "./components/Appbar";
 function App({ children }) {
   return (
+    <div style={{width: "100vw",
+            height: "100vh",
+            backgroundColor: "#eeeeee"}}
+        >
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       {children}
+      <Appbar />
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -34,6 +40,7 @@ function App({ children }) {
       </Routes>
     </BrowserRouter>
     </LocalizationProvider>
+    </div>
     
   );
 }
