@@ -146,6 +146,7 @@ const UpdateData = () => {
 
           <DateTimePicker
             label="Watched on"
+            ampm={false}
             onChange={(newValue) => setWatchedon(newValue)}
             value={watchedon}
           />
