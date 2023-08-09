@@ -31,7 +31,9 @@ function Appbar ()
         return <div style={{
             display: "flex",
             justifyContent: "space-between",
-            padding: 4
+            padding: 4,
+            color: "black",
+            backgroundColor: "lightgray"
         }}>
             <div>
                 <Typography variant={"h6"}>Movie Repo</Typography>
@@ -39,7 +41,7 @@ function Appbar ()
     
             <div style={{display: "flex"}}>
                 <div>
-                    {userEmail}
+                    <b>{userEmail}</b>
                 </div>
                 <div style={{marginRight: 10}}>
                     <Button
@@ -56,7 +58,9 @@ function Appbar ()
         return <div style={{
             display: "flex",
             justifyContent: "space-between",
-            padding: 4
+            padding: 4,
+            color: "black",
+            backgroundColor: "lightgray"
         }}>
             <div>
                 <Typography variant={"h6"}>Movie Repo</Typography>

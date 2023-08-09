@@ -114,7 +114,8 @@ const Login = () => {
                           })
                           if (response.status === 200) {
                             localStorage.setItem("token", response.data.token);
-                            navigate("/loginsuccessful");
+                            window.location = "/loginsuccessful";
+                           // navigate("/loginsuccessful");
                           } else {
                             setResult(response.data);
                             setShowDiv(true);

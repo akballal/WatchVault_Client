@@ -36,7 +36,8 @@ const LoginSuccessful = () =>
     
     const handleLogout = () => {
         localStorage.clear();
-        navigate('/login');
+        window.location = "/login";
+        //navigate('/login');
       };
     
       const loggedInUser = localStorage.getItem("token");
