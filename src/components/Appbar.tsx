@@ -6,8 +6,9 @@ const token = localStorage.getItem("token");
 const backendUrl = "http://localhost:3000";
 
 
-function Appbar ()
+const Appbar = () =>
 {
+    //const navigate = useNavigate();
     const [userEmail, setUserEmail] = useState(null);
     
     const init = async () => {
@@ -71,7 +72,8 @@ function Appbar ()
                     <Button
                         size="small" variant="text"
                         onClick={() => {
-                            navigate("/signup")
+                            window.location = "/signup";
+                           // navigate("/signup")
                         }}
                     >Signup</Button>
                 </div>
@@ -79,9 +81,10 @@ function Appbar ()
                     <Button
                         size="small" variant="text"
                         onClick={() => {
-                            navigate("/signin")
+                            window.location = "/login";
+                            //navigate("/login")
                         }}
-                    >Signin</Button>
+                    >Login</Button>
                 </div>
             </div>
         </div>

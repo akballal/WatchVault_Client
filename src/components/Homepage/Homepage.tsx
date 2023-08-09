@@ -18,7 +18,7 @@ const HomePage = () => {
       display: "flex",
       justifyContent: "center"
     }}>
-      <Link to="/signup">Signup</Link> &nbsp; <Link to="/login">Login</Link>
+      {/* <Link to="/signup">Signup</Link> &nbsp; <Link to="/login">Login</Link> */}
     </div>
   </div>
       

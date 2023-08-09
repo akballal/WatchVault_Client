@@ -175,6 +175,28 @@ const WatchHistory = () => {
   };
 
   if (sortedData().length === 0) {
+    if(rangevalue === null)
+    {
+      return(
+        <div style={{
+          paddingTop: 90,
+          marginBottom: 10,
+          display: "flex",
+          flexDirection: "column", // To make items stack vertically
+          alignItems: "center",   // To horizontally center items
+          textAlign: "center"     // To center text within Typography
+        }}>
+          <Typography variant="h6" style={{ marginBottom: "10px" }}>
+            Nothing added yet!! Start adding your watch history
+          </Typography>
+        
+          {/* Add a blank line using margin or padding */}
+          <div style={{ margin: "5px 0" }}></div>
+        
+          <Link to="/adddata">Add Data</Link>
+        </div>
+      )
+    }
     return (
       <div>
         <TableContainer component={Paper}>
