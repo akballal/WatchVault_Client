@@ -82,21 +82,19 @@ const Signup = () => {
                 const response = await axios.post(`${backendUrl}/signup`, {
                   username, password
                 })
-
-                if (response.status === 200) {
-                  navigate('/signupsuccessful');
-                }
-                else {
-                  console.log("here..")
-                  setResult(response.data);
+                 navigate('/signupsuccessful');
+                
+              } catch (error: any) {
+                console.log(error)
+                
+                if(error.response.status === 403)
+                {
+                  setResult(error.response.data);
                   setShowDiv(true);
                 }
-              } catch (error) {
-                console.log(error.response.data)
-                setResult(error.response.data);
+                setResult(error.response.data.error.issues[0].path[0] + " " + error.response.data.error.issues[0].message);
                   setShowDiv(true);
-
-              }
+}
             }}
           > Signup</Button></center>  
           <div>
