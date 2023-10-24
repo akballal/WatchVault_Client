@@ -33,8 +33,7 @@ const Appbar = () =>
             display: "flex",
             justifyContent: "space-between",
             padding: 4,
-            color: "black",
-            backgroundColor: "lightgray"
+            color: "red"
         }}>
             <div>
                 <Typography variant={"h6"}>Movie Repo</Typography>
@@ -60,8 +59,7 @@ const Appbar = () =>
             display: "flex",
             justifyContent: "space-between",
             padding: 4,
-            color: "black",
-            backgroundColor: "lightgray"
+            color: "white"
         }}>
             <div>
                 <Typography variant={"h6"}>Movie Repo</Typography>
@@ -70,7 +68,7 @@ const Appbar = () =>
             <div style={{display: "flex"}}>
                 <div style={{marginRight: 10}}>
                     <Button
-                        size="small" variant="text"
+                        size="small" variant="text" style={{ color: 'white' }}
                         onClick={() => {
                             window.location = "/signup";
                            // navigate("/signup")
@@ -79,7 +77,7 @@ const Appbar = () =>
                 </div>
                 <div>
                     <Button
-                        size="small" variant="text"
+                        size="small" variant="text" style={{ color: 'white' }}
                         onClick={() => {
                             window.location = "/login";
                             //navigate("/login")

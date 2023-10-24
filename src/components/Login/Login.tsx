@@ -51,7 +51,7 @@ const Login = () => {
         display: "flex",
         justifyContent: "center"
       }}>
-        <Typography variant={"h6"}>
+        <Typography variant={"h6"} color={"white"}>
           Welcome to Movie-Repo. Sign in below
         </Typography>
       </div>

@@ -20,10 +20,7 @@ import "./App.css";
 import Appbar from "./components/Appbar";
 function App({ children }) {
   return (
-    <div style={{width: "100vw",
-            height: "100vh",
-            backgroundColor: "#eeeeee"}}
-        >
+    <div className="app-container">
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       {children}
       <Appbar />

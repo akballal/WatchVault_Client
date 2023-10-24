@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate } from "react-router-dom";
 import axios from 'axios'
 import { Typography, Card, TextField, Button } from "@mui/material";
 
@@ -23,7 +23,7 @@ const Signup = () => {
         display: "flex",
         justifyContent: "center"
       }}>
-        <Typography variant={"h6"}>
+        <Typography variant={"h6"} color={"white"}>
           Welcome to Movie-Repo. Sign up below
         </Typography>
       </div>
@@ -96,7 +96,17 @@ const Signup = () => {
                   setShowDiv(true);
 }
             }}
-          > Signup</Button></center>  
+          > Signup</Button></center> 
+          <br></br>
+         <br></br>
+        <div style={{
+          display: 'flex',
+          justifyContent: "center"
+        }}>
+          <Link to="/">Homepage</Link>
+          
+         </div>
+         <div></div> 
           <div>
           {showDiv && (
         <div style={{ textAlign: "center", margin: "10px" }}>{result}</div>
