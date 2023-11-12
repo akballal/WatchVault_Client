@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useEffect } from "react";
 import jwtDecode from "jwt-decode";
-const backendUrl = "http://localhost:3000";
+const backendUrl = "http://localhost:8080";
 import axios from 'axios'
 
 const LoginSuccessful = () =>
@@ -11,16 +11,22 @@ const LoginSuccessful = () =>
       useEffect(() => {
         (async () => {
           try {
-            const response = await axios.get(`${backendUrl}/authenticate`, {
-              headers: {
-                authorization: localStorage.getItem("token")
+            const response = await axios.post(
+              `${backendUrl}/user/authenticate`,
+              {},
+              {
+                headers: {
+                  token: localStorage.getItem("token")
+                }
               }
-            });
+            );
             console.log(response.status)
             if (response.status === 403) {
               navigate("/login?message=Session expired, please Login !!")
             }
           } catch (error) {
+            console.log(error)
+            console.log(error.response.status)
             if(error.response.status === 403)
             {
               navigate("/login?message=Session expired, please Login !!")

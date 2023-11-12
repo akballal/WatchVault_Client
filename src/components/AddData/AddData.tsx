@@ -24,7 +24,7 @@ dayjs.extend(utc);
 dayjs.extend(tz);
 
 
-const backendUrl = "http://localhost:3000";
+const backendUrl = "http://localhost:8080";
 
 const AddData = () => {
   const [name, setName] = useState("");
@@ -197,17 +197,17 @@ const AddData = () => {
                 } else {
                   console.log(watchedon)
                   const response = await axios.post(
-                    `${backendUrl}/adddata`,
+                    `${backendUrl}/data/adddata`,
                     {
                       name,
                       description,
                       watchedon,
                       rating,
-                      type,
+                      type
                     },
                     {
                       headers: {
-                        authorization: token,
+                        Authorization: `Bearer ${token}`,
                       },
                     }
                   );
@@ -225,6 +225,7 @@ const AddData = () => {
                   }
                 }
               } catch (error) {
+                console.log(error)
                 if (error.response.status === 403) {
                   navigate("/login?message=Session expired, please Login !!");
                 } else {

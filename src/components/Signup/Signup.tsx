@@ -3,7 +3,7 @@ import {Link, useNavigate } from "react-router-dom";
 import axios from 'axios'
 import { Typography, Card, TextField, Button } from "@mui/material";
 
-const backendUrl = "http://localhost:3000";
+const backendUrl = "http://localhost:8080";
 const Signup = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -79,7 +79,7 @@ const Signup = () => {
                   setPasswordError(false);
                 }
                 setShowDiv(false);
-                const response = await axios.post(`${backendUrl}/signup`, {
+                const response = await axios.post(`${backendUrl}/user/signup`, {
                   username, password
                 })
                  navigate('/signupsuccessful');

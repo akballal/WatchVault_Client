@@ -21,11 +21,11 @@ import tz from 'dayjs/plugin/timezone';
 dayjs.extend(utc);
 dayjs.extend(tz);
 
-const backendUrl = "http://localhost:3000";
+const backendUrl = "http://localhost:8080";
 const UpdateData = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [watchedon, setWatchedon] = useState(null);
+  const [watchedon, setWatchedon] = useState<string | null>(null);
   const [rating, setRating] = useState<number | null>(null);
   const [type, setType] = useState("");
   const [showDiv, setShowDiv] = useState(false);
@@ -47,21 +47,30 @@ const UpdateData = () => {
 
   const init = async () => {
     try {
-      const currentData = await axios.get(`${backendUrl}/getrecord`, {
+      const currentData = await axios.get(`${backendUrl}/data/getdatabyid`, {
         headers: {
           id,
-          authorization: localStorage.getItem("token"),
+          Authorization: `Bearer ${token}`,
         },
       });
 
       //const watchedonDate = currentData.data.result.watchedon.toISOString(); // Convert Date object to string
-      const watchedonDayjs = dayjs.utc(currentData.data.result.watchedon); // Convert to dayjs UTC object
+      //const watchedonDayjs = dayjs.utc(currentData.data.watchedon); // Convert to dayjs UTC object
+     // console.log(watchedonDayjs.$d)
+     
 
-      setName(currentData.data.result.name);
-      setDescription(currentData.data.result.description);
-      setWatchedon(watchedonDayjs);
-      setType(currentData.data.result.type);
-      setRating(currentData.data.result.rating);
+     const date = currentData.data.watchedon
+     console.log(currentData.data)
+     console.log(date)
+     const localDate = dayjs(date).format("YYYY-MM-DD HH:mm:ss")
+     console.log(localDate)
+     console.log(typeof(localDate))
+     
+      setName(currentData.data.name);
+      setDescription(currentData.data.description);
+      //setWatchedon(localDate);
+      setType(currentData.data.type);
+      setRating(currentData.data.rating);
     } catch (error) {
       console.log(error)
       if (error.response.status === 403) {
@@ -145,10 +154,16 @@ const UpdateData = () => {
           </p>
 
           <DateTimePicker
-            label="Watched on"
-            ampm={false}
-            onChange={(newValue) => setWatchedon(newValue)}
-            value={watchedon}
+          label="Watched On"
+          timezone="Asia/Kolkata"
+          ampm={false}
+          disableFuture
+          onChange={(newValue) => {
+            const date = newValue.$d
+            const localDate = dayjs(date).format("YYYY-MM-DD HH:mm:ss")
+            setWatchedon(localDate)
+          }}
+          value={watchedon}
           />
           <p style={{ textAlign: "center", margin: "10px", color: "red" }}>
             {formErrors.watchedon}
@@ -212,26 +227,28 @@ const UpdateData = () => {
                 try {
                   e.preventDefault();
                   const fieldErrors = validate(formValues);
+                  console.log(id)
                   const user = localStorage.getItem("User");
+                  console.log(user)
                   if (Object.keys(fieldErrors).length !== 0) {
                     setFormErrors(fieldErrors);
                     console.log("formerrors -> ", formErrors);
                     return;
                   } else {
                     const response = await axios.put(
-                      `${backendUrl}/updaterecord`,
+                      `${backendUrl}/data/updatedata`,
                       {
-                        id,
+                        dataid:id,
                         name,
                         description,
                         watchedon,
                         rating,
                         type,
-                        user,
+                        username:user,
                       },
                       {
                         headers: {
-                          authorization: token,
+                          Authorization: `Bearer ${token}`,
                         },
                       }
                     );

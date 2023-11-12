@@ -3,7 +3,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 const token = localStorage.getItem("token");
-const backendUrl = "http://localhost:3000";
+const backendUrl = "http://localhost:8080";
 
 
 const Appbar = () =>
@@ -13,12 +13,18 @@ const Appbar = () =>
     
     const init = async () => {
         try {
-            const response = await axios.get(`${backendUrl}/authenticate`, {
-                headers: {
-                  authorization: token
+            console.log(token)
+            const response = await axios.post(
+                `${backendUrl}/user/authenticate`,
+                {},
+                {
+                  headers: {
+                    token: token
+                  }
                 }
-              });
-          setUserEmail(response.data.username)
+              );
+              console.log(response)
+          setUserEmail(response.data)
         } catch (error) {
           console.log(error)
         }
@@ -33,7 +39,7 @@ const Appbar = () =>
             display: "flex",
             justifyContent: "space-between",
             padding: 4,
-            color: "red"
+            
         }}>
             <div>
                 <Typography variant={"h6"}>Movie Repo</Typography>
@@ -58,8 +64,7 @@ const Appbar = () =>
         return <div style={{
             display: "flex",
             justifyContent: "space-between",
-            padding: 4,
-            color: "white"
+            padding: 4
         }}>
             <div>
                 <Typography variant={"h6"}>Movie Repo</Typography>
@@ -68,7 +73,7 @@ const Appbar = () =>
             <div style={{display: "flex"}}>
                 <div style={{marginRight: 10}}>
                     <Button
-                        size="small" variant="text" style={{ color: 'white' }}
+                        size="small" variant="text"
                         onClick={() => {
                             window.location = "/signup";
                            // navigate("/signup")
@@ -77,7 +82,7 @@ const Appbar = () =>
                 </div>
                 <div>
                     <Button
-                        size="small" variant="text" style={{ color: 'white' }}
+                        size="small" variant="text" 
                         onClick={() => {
                             window.location = "/login";
                             //navigate("/login")

@@ -7,7 +7,7 @@ import { Button, Card, TextField, Typography } from "@mui/material";
 
 
 
-const backendUrl = "http://localhost:3000";
+const backendUrl = "http://localhost:8080";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -24,11 +24,15 @@ const Login = () => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.get(`${backendUrl}/authenticate`, {
-          headers: {
-            authorization: localStorage.getItem("token")
+        const response = await axios.post(
+          `${backendUrl}/user/authenticate`,
+          {},
+          {
+            headers: {
+              token: localStorage.getItem("token")
+            }
           }
-        });
+        );
   
         if (response.status === 200) {
           navigate("/loginsuccessful");
@@ -51,9 +55,13 @@ const Login = () => {
         display: "flex",
         justifyContent: "center"
       }}>
-        <Typography variant={"h6"} color={"white"}>
-          Welcome to Movie-Repo. Sign in below
+        <Typography variant={"h6"}>
+          {message}
         </Typography>
+        
+        {!message && <Typography variant={"h6"}>
+          Welcome to Movie-Repo. Sign in below
+        </Typography>}
       </div>
 
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -107,13 +115,20 @@ const Login = () => {
                             setPasswordError(false);
                           }
                           setShowDiv(false);
-                          console.log(`${backendUrl}/login`);
-                          const response = await axios.post(`${backendUrl}/login`,
+                          console.log(`${backendUrl}/user/login`);
+                          const response = await axios.post(`${backendUrl}/user/login`,
                           {
                             username,password
+                          },
+                          {
+                            headers: {
+                              withCredentials: true
+                            }
                           })
                           if (response.status === 200) {
-                            localStorage.setItem("token", response.data.token);
+                            console.log(response);
+                            console.log(response.data);
+                            localStorage.setItem("token", response.data);
                             window.location = "/loginsuccessful";
                            // navigate("/loginsuccessful");
                           } else {
@@ -122,6 +137,7 @@ const Login = () => {
                           }
                         } catch (error) {
                           console.error("Login failed:", error);
+                          console.log(error)
                           setResult(error.response.data);
                           setShowDiv(true);
                         }

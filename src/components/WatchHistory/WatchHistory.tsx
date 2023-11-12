@@ -10,7 +10,7 @@ import DeleteOutlinedIcon from '@mui/icons-material/Delete';
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 import dayjs from "dayjs";
 
-const backendUrl = "http://localhost:3000";
+const backendUrl = "http://localhost:8080";
 
 const WatchHistory = () => {
   const navigate = useNavigate();
@@ -28,13 +28,14 @@ const WatchHistory = () => {
 
   const init = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/alldata`, {
+      const response = await axios.get(`${backendUrl}/data/getalldata`, {
         headers: {
-          authorization: token
+          Authorization: `Bearer ${token}`,
         }
       });
-      console.log('JSON object:', response.data.problems);
-      setAllData(response.data.problems);
+      console.log(response.data)
+      console.log('JSON object:', response.data);
+      setAllData(response.data);
       console.log('status code:', response.status);
       if (response.status === 401) {
         return (<h1>Unauthorized</h1>);
@@ -65,16 +66,18 @@ const WatchHistory = () => {
   const handleDelete = async (id) => {
     console.log("Delete data with id:", id);
     try {
-      const response = await axios.delete(`${backendUrl}/deleterecord`, {
+      const response = await axios.delete(`${backendUrl}/data/deletedata`, {
         headers: {
-          authorization: token,
-          id
+          id,
+          Authorization: `Bearer ${token}`,
         }
       });
+      console.log(response)
       if (response.status === 403) {
         navigate("/login?message=Session expired, please Login !!");
       } else {
         setAllData(prevData => prevData.filter(data => data._id !== id));
+        window.location.reload();
       }
     } catch (error) {
       if (error.response.status === 403) {
@@ -436,10 +439,10 @@ const WatchHistory = () => {
                 <TableCell>{data.rating}</TableCell>
                 <TableCell>{data.type}</TableCell>
                 <TableCell>
-                  <Button size="small" variant="outlined" onClick={() => handleUpdate(data._id)}>
+                  <Button size="small" variant="outlined" onClick={() => handleUpdate(data.dataid)}>
                     <EditIcon />
                   </Button>
-                  <Button size="small" variant="outlined" onClick={() => handleDelete(data._id)}>
+                  <Button size="small" variant="outlined" onClick={() => handleDelete(data.dataid)}>
                     <DeleteOutlinedIcon />
                   </Button>
                 </TableCell>
