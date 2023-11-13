@@ -24,6 +24,7 @@ dayjs.extend(utc);
 dayjs.extend(tz);
 
 
+
 const backendUrl = "http://localhost:8080";
 
 const AddData = () => {
@@ -126,8 +127,15 @@ const AddData = () => {
           ampm={false}
           disableFuture
           onChange={(newValue) => {
-            const date = newValue.$d
-            const localDate = dayjs(date).format("YYYY-MM-DD HH:mm:ss")
+            
+             const date = newValue.$d
+             const localDate = dayjs(date).format("YYYY-MM-DD HH:mm:ss")
+
+           //const date = dayjs(newValue.$d);
+    
+    // Convert local date to UTC date without offset
+    //const utcDate = date.utc().format("YYYY-MM-DD HH:mm:ss");
+
             setWatchedon(localDate)
           }}
           />

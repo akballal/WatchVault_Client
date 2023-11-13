@@ -54,21 +54,18 @@ const UpdateData = () => {
         },
       });
 
-      //const watchedonDate = currentData.data.result.watchedon.toISOString(); // Convert Date object to string
-      //const watchedonDayjs = dayjs.utc(currentData.data.watchedon); // Convert to dayjs UTC object
-     // console.log(watchedonDayjs.$d)
-     
-
      const date = currentData.data.watchedon
      console.log(currentData.data)
      console.log(date)
      const localDate = dayjs(date).format("YYYY-MM-DD HH:mm:ss")
      console.log(localDate)
      console.log(typeof(localDate))
+     const localDateObject = dayjs(localDate)
+
      
       setName(currentData.data.name);
       setDescription(currentData.data.description);
-      //setWatchedon(localDate);
+      setWatchedon(localDateObject);
       setType(currentData.data.type);
       setRating(currentData.data.rating);
     } catch (error) {
@@ -77,11 +74,7 @@ const UpdateData = () => {
         navigate("/login?message=Session expired, please Login !!");
       } else {
         console.log(error);
-        return (
-          <h1>
-            Some error occured, please check console logs for more details
-          </h1>
-        );
+        // Handle the error or navigate here without returning JSX
       }
     }
   };
@@ -159,9 +152,12 @@ const UpdateData = () => {
           ampm={false}
           disableFuture
           onChange={(newValue) => {
+            console.log(newValue)
             const date = newValue.$d
             const localDate = dayjs(date).format("YYYY-MM-DD HH:mm:ss")
-            setWatchedon(localDate)
+            console.log(localDate)
+            const localDateObject = dayjs(localDate)
+            setWatchedon(localDateObject)
           }}
           value={watchedon}
           />
@@ -235,13 +231,18 @@ const UpdateData = () => {
                     console.log("formerrors -> ", formErrors);
                     return;
                   } else {
+
+                    console.log(watchedon)
+                    const date = watchedon.$d
+                    const watchedon_date = dayjs(date).format("YYYY-MM-DD HH:mm:ss")
+                    console.log(watchedon_date)
                     const response = await axios.put(
                       `${backendUrl}/data/updatedata`,
                       {
                         dataid:id,
                         name,
                         description,
-                        watchedon,
+                        watchedon:watchedon_date,
                         rating,
                         type,
                         username:user,
