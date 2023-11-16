@@ -111,17 +111,18 @@ const WatchHistory = () => {
     }
     setEmptyStartDate(false);
     setEmptyEndDate(false);
+    const startDateObject = dayjs(startDate)
+    const endDateObject = dayjs(endDate)
+    
     try {
-      const response = await axios.post(`${backendUrl}/filterdata`, {
-        filterType: 'daterange',
-        startDate,
-        endDate
-      }, {
+      const response = await axios.get(`${backendUrl}/data/filterdata`, {
         headers: {
-          authorization: token
+          Authorization: `Bearer ${token}`,
+          startDateObject,endDateObject
         }
       });
-      setAllData(response.data.problems);
+      console.log(response)
+      setAllData(response.data);
     } catch (error) {
       if (error.response.status === 403) {
         navigate("/login?message=Session expired, please Login !!");
@@ -135,12 +136,14 @@ const WatchHistory = () => {
   const clearFilters = async () => {
     setRangevalue(null)
     try {
-      const response = await axios.get(`${backendUrl}/alldata`, {
+      const response = await axios.get(`${backendUrl}/data/getalldata`, {
         headers: {
-          authorization: token
+          Authorization: `Bearer ${token}`,
         }
       });
-      setAllData(response.data.problems);
+      console.log(response.data)
+      console.log('JSON object:', response.data);
+      setAllData(response.data);
     } catch (error) {
       if (error.response.status === 403) {
         navigate("/login?message=Session expired, please Login !!");

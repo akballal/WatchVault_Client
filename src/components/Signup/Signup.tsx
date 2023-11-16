@@ -23,7 +23,7 @@ const Signup = () => {
         display: "flex",
         justifyContent: "center"
       }}>
-        <Typography variant={"h6"} color={"white"}>
+        <Typography variant={"h6"}>
           Welcome to Movie-Repo. Sign up below
         </Typography>
       </div>
@@ -64,6 +64,7 @@ const Signup = () => {
           <Button
             size={"large"}
             variant="contained"
+            disabled={!username || !password}
             onClick={async (e) => {
               try {
                 if (!username) {

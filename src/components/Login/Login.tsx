@@ -100,6 +100,7 @@ const Login = () => {
           <Button
             size={"large"}
             variant="contained"
+            disabled={!username || !password}
             onClick={async (e) => {
                         try {
                           if (!username) {
