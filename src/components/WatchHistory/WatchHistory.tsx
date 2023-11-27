@@ -144,6 +144,7 @@ const WatchHistory = () => {
       console.log(response.data)
       console.log('JSON object:', response.data);
       setAllData(response.data);
+      
     } catch (error) {
       if (error.response.status === 403) {
         navigate("/login?message=Session expired, please Login !!");

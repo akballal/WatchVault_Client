@@ -219,6 +219,7 @@ const UpdateData = () => {
             <Button
               size="large"
               variant="contained"
+              disabled={!name || !description || !watchedon || !rating || !type}
               onClick={async (e) => {
                 try {
                   e.preventDefault();

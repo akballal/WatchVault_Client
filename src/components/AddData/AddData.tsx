@@ -191,6 +191,7 @@ const AddData = () => {
           <Button
             size="large"
             variant="contained"
+            disabled={!name || !description || !watchedon || !rating || !type}
             onClick={async (e) => {
               try {
                 console.log("Watched On => ", watchedon)
