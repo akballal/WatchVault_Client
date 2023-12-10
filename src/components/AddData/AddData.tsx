@@ -82,6 +82,7 @@ const AddData = () => {
   };
 
   
+  
   return (
     <>
       <div style={{
@@ -100,7 +101,7 @@ const AddData = () => {
           <TextField
             onChange={(e) => setName(e.target.value)}
             fullWidth={true}
-            label="Name"
+            label="Name*"
             name="name"
             variant="outlined"
             value={name}
@@ -113,7 +114,7 @@ const AddData = () => {
             onChange={(e) => setDescription(e.target.value)}
             fullWidth={true}
             name="description"
-            label="Description"
+            label="Description*"
             variant="outlined"
             value={description}
           />
@@ -122,7 +123,7 @@ const AddData = () => {
           </p>
 
           <DateTimePicker
-          label="Watched On"
+          label="Watched On*"
           timezone="Asia/Kolkata"
           ampm={false}
           disableFuture
