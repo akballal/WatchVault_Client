@@ -256,8 +256,11 @@ const UpdateData = () => {
                     );
 
                     if (response.status === 200) {
-                      setResult(await response.data);
-                      setShowDiv(true);
+                      //setResult(await response.data);
+                      //setShowDiv(true);
+                      navigate(
+                        "/watchhistory"
+                      );
                     } else if (response.status === 403) {
                       navigate(
                         "/login?message=Session expired, please Login !!"

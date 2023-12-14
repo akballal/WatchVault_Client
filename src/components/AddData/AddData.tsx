@@ -223,9 +223,12 @@ const AddData = () => {
                   );
 
                   if (response.status === 200) {
-                    setFormErrors(fieldErrors);
-                    setResult(response.data);
-                    setShowDiv(true);
+                    // setFormErrors(fieldErrors);
+                    // setResult(response.data);
+                    // setShowDiv(true);
+                    navigate(
+                      "/watchhistory"
+                    );
                   } else if (response.status === 403) {
                     navigate("/login?message=Session expired, please Login !!");
                   } else {

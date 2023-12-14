@@ -472,7 +472,7 @@ const WatchHistory = () => {
             ))}
             <TableRow>
               <TableCell colSpan={6}>
-                <Link to="/adddata">Add new entry</Link>
+                <center><Link to="/adddata">Add new entry</Link></center>
               </TableCell>
             </TableRow>
           </TableBody>
