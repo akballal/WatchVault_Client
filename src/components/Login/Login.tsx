@@ -137,10 +137,23 @@ const Login = () => {
                             setShowDiv(true);
                           }
                         } catch (error) {
+                          if (axios.isAxiosError(error)) {
+                            // Axios error, check for network issues or server being down
+                            if (!error.response) {
+                              setResult("Network error or server is down. Sorry for inconvenience, We are working to make it up and running.");
+                              setShowDiv(true);
+                            } else {
+                              // Handle other Axios errors if needed
+                              setResult(error.response.data);
+                              setShowDiv(true);
+                            }
+                          }
+                          else{
                           console.error("Login failed:", error);
                           console.log(error)
                           setResult(error.response.data);
                           setShowDiv(true);
+                          }
                         }
             }}
           > Login</Button></center>

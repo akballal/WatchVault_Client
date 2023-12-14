@@ -88,13 +88,24 @@ const Signup = () => {
               } catch (error: any) {
                 console.log(error)
                 
-                if(error.response.status === 403)
+                if (axios.isAxiosError(error)) {
+                  // Axios error, check for network issues or server being down
+                  if (!error.response) {
+                    setResult("Network error or server is down. Sorry for inconvenience, We are working to make it up and running.");
+                    setShowDiv(true);
+                  } else {
+                    // Handle other Axios errors if needed
+                    setResult(error.response.data);
+                    setShowDiv(true);
+                  }
+                }
+                else{
+                if(error.response.status === 409)
                 {
                   setResult(error.response.data);
                   setShowDiv(true);
                 }
-                setResult(error.response.data.error.issues[0].path[0] + " " + error.response.data.error.issues[0].message);
-                  setShowDiv(true);
+              }
 }
             }}
           > Signup</Button></center> 

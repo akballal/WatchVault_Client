@@ -45,7 +45,13 @@ const WatchHistory = () => {
         return;
       }
     } catch (error) {
-      if (error.response.status === 403) {
+      if (axios.isAxiosError(error)) {
+        // Axios error, check for network issues or server being down
+        if (!error.response) {
+          return (<h1>Network error or server is down. Sorry for inconvenience, We are working to make it up and running.</h1>);
+        }
+      }
+      else if (error.response.status === 403) {
         navigate("/login?message=Session expired, please Login !!");
       } else {
         console.log(error);
@@ -124,7 +130,13 @@ const WatchHistory = () => {
       console.log(response)
       setAllData(response.data);
     } catch (error) {
-      if (error.response.status === 403) {
+      if (axios.isAxiosError(error)) {
+        // Axios error, check for network issues or server being down
+        if (!error.response) {
+          return (<h1>Network error or server is down. Sorry for inconvenience, We are working to make it up and running.</h1>);
+        }
+      }
+      else if (error.response.status === 403) {
         navigate("/login?message=Session expired, please Login !!");
       } else {
         console.log(error);
@@ -146,7 +158,13 @@ const WatchHistory = () => {
       setAllData(response.data);
       
     } catch (error) {
-      if (error.response.status === 403) {
+      if (axios.isAxiosError(error)) {
+        // Axios error, check for network issues or server being down
+        if (!error.response) {
+          return (<h1>Network error or server is down. Sorry for inconvenience, We are working to make it up and running.</h1>);
+        }
+      }
+      else if (error.response.status === 403) {
         navigate("/login?message=Session expired, please Login !!");
       } else {
         console.log(error);
