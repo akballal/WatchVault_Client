@@ -60,7 +60,7 @@ const Login = () => {
         </Typography>
         
         {!message && <Typography variant={"h6"}>
-          Welcome to Movie-Repo. Sign in below
+          Welcome to WatchVault. Sign in below
         </Typography>}
       </div>
 

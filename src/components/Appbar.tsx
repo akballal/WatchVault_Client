@@ -42,7 +42,7 @@ const Appbar = () => {
         }}
       >
         <div>
-          <Typography variant={"h6"}>Movie Repo</Typography>
+          <Typography variant={"h6"}>WatchVault</Typography>
         </div>
 
         <div style={{ display: "flex" }}>
@@ -74,7 +74,7 @@ const Appbar = () => {
         }}
       >
         <div>
-          <Typography variant={"h6"}>Movie Repo</Typography>
+          <Typography variant={"h6"}>WatchVault</Typography>
         </div>
 
         <div style={{ display: "flex" }}>

@@ -12,7 +12,7 @@ const HomePage = () => {
       justifyContent: "center"
     }}>
       <Typography variant={"h6"}>
-        Welcome to Movie-Repo, Here you can save all your movie/series watch history.
+        Welcome to WatchVault, Here you can save all your movie/series watch history.
       </Typography>
     </div>
     <div style={{
