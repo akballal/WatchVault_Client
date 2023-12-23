@@ -30,6 +30,7 @@ const UpdateData = () => {
   const [type, setType] = useState("");
   const [showDiv, setShowDiv] = useState(false);
   const [result, setResult] = useState("");
+  const [photo, setPhoto] = useState(null);
   const initialValues = {
     name: "",
     description: "",
@@ -68,6 +69,7 @@ const UpdateData = () => {
       setWatchedon(localDateObject);
       setType(currentData.data.type);
       setRating(currentData.data.rating);
+      setPhoto(currentData.data.photo);
     } catch (error) {
       console.log(error)
       if (error.response.status === 403) {
@@ -210,6 +212,22 @@ const UpdateData = () => {
               value={rating}
             />
           </div>
+          <center>
+          <div>
+          {photo ? (
+    <img
+      src={`data:image/png;base64,${photo}`}
+      alt="Watched Photo"
+      style={{ width: "300px", height: "150px", marginBottom: "10px" }}
+    />
+  ) : (
+    <img
+                      src="src\assets\default_Image.jpg" // Assuming data.photo contains the direct photo URL
+                      alt="Watched Photo"
+                      style={{ width: "300px", height: "150px", marginBottom: "10px" }}
+                    />
+  )}
+          </div></center>
           <p style={{ textAlign: "center", margin: "10px", color: "red" }}>
             {formErrors.rating}
           </p>
