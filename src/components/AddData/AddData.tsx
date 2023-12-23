@@ -35,6 +35,8 @@ const AddData = () => {
   const [type, setType] = useState("");
   const [showDiv, setShowDiv] = useState(false);
   const [result, setResult] = useState("");
+  const [photo, setPhoto] = useState(null);
+  
   const initialValues = {
     name: "",
     description: "",
@@ -186,6 +188,21 @@ const AddData = () => {
           <p style={{ textAlign: "center", margin: "10px", color: "red" }}>
             {formErrors.rating}
           </p>
+
+         <label
+              htmlFor="photoInput"
+              className="cursor-pointer block text-gray-600 font-bold"
+            >
+              Upload Banner
+            </label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setPhoto(e.target.files[0])}
+            style={{ margin: "10px 0" }}
+          /> 
+
+          
           <br></br>
 
           <center>
@@ -205,19 +222,22 @@ const AddData = () => {
                   console.log(rating)
                   return;
                 } else {
-                  console.log(watchedon)
+
+                  const formData = new FormData();
+                  formData.append("name", name);
+                  formData.append("description", description);
+                  formData.append("watchedon", watchedon);
+                  formData.append("rating", rating);
+                  formData.append("type", type);
+                  formData.append("photo", photo);
+
                   const response = await axios.post(
                     `${backendUrl}/data/adddata`,
-                    {
-                      name,
-                      description,
-                      watchedon,
-                      rating,
-                      type
-                    },
+                    formData,
                     {
                       headers: {
                         Authorization: `Bearer ${token}`,
+                        "Content-Type": "multipart/form-data",
                       },
                     }
                   );
@@ -240,7 +260,15 @@ const AddData = () => {
               } catch (error) {
                 console.log(error)
                 if (error.response.status === 403) {
+                  if(error.code === "ERR_BAD_REQUEST")
+                  {
+                    setResult("Bad Request, Please check console logs for more details")
+                    setShowDiv(true)
+                  }
+                  else
+                  {
                   navigate("/login?message=Session expired, please Login !!");
+                  }
                 } else {
                   console.log(error);
                   return (
