@@ -101,8 +101,12 @@ const WatchHistory = () => {
       if (response.status === 403) {
         navigate("/login?message=Session expired, please Login !!");
       } else {
-        setAllData((prevData) => prevData.filter((data) => data._id !== id));
-        window.location.reload();
+        // console.log("Deleting data with id:", id);
+        // console.log("All Data:", allData.map((data) => data.dataid));
+        //console.log(sortedData)
+        setAllData((sortedData) => sortedData.filter((data) => data.dataid !== id));
+        //console.log(sortedData)
+       // window.location.reload();
       }
     } catch (error) {
       if (error.response.status === 403) {
@@ -593,13 +597,13 @@ const WatchHistory = () => {
                     <img
                       src={`data:image/png;base64,${data.photo}`}
                       alt="Watched Photo"
-                      style={{ width: "50px", height: "50px" }}
+                      style={{ width: "120px", height: "100px", marginBottom: "10px" }}
                     />
                   ) : (
                     <img
                       src="src\assets\default_Image.jpg" // Assuming data.photo contains the direct photo URL
                       alt="Watched Photo"
-                      style={{ width: "50px", height: "50px" }}
+                      style={{ width: "120px", height: "100px", marginBottom: "10px" }}
                     />
                   )}
                 </TableCell>

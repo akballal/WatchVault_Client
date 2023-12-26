@@ -202,7 +202,6 @@ const AddData = () => {
             style={{ margin: "10px 0" }}
           /> 
 
-          
           <br></br>
 
           <center>
