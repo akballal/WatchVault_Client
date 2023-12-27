@@ -1,8 +1,39 @@
 import { Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import backgroundImage from '/src/assets/bg-image.jpg';
+import { useEffect } from "react";
+import axios from "axios";
 
+
+const backendUrl = "http://localhost:8080";
 const HomePage = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.post(
+          `${backendUrl}/user/authenticate`,
+          {},
+          {
+            headers: {
+              token: localStorage.getItem("token")
+            }
+          }
+        );
+  
+        if (response.status === 200) {
+          navigate("/loginsuccessful");
+        }
+      } catch(error){
+
+                  console.log(error)
+                  return(<h1>Some error occured, please check console logs for more details</h1>)
+
+      }
+    })();
+  }, []);
+
+  
   return (
     <div>
     <div style={{
