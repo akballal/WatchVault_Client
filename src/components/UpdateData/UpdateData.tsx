@@ -281,7 +281,7 @@ const UpdateData = () => {
                 />
               )}
             </div>
-            {photo && (
+            {photo && !selectedPhoto && (
               <Button
                 style={{ marginBottom: "10px" }}
                 size="small"
@@ -291,18 +291,9 @@ const UpdateData = () => {
                   setPhoto(null);
                 }}
               >
-                Remove Photo
+                Remove Banner
               </Button>
             )}
-
-            <input
-             ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={(e) => setSelectedPhoto(e.target.files[0])}
-              style={{ marginBottom: "20px" }}
-            />
-
             {selectedPhoto && (
               <Button
                 style={{ marginBottom: "10px" }}
@@ -317,6 +308,16 @@ const UpdateData = () => {
                 Clear Selection
               </Button>
             )}
+
+            <input
+             ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={(e) => setSelectedPhoto(e.target.files[0])}
+              style={{ marginBottom: "20px" }}
+            />
+
+            
           </center>
 
           <div>
