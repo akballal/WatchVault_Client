@@ -36,6 +36,7 @@ const AddData = () => {
   const [showDiv, setShowDiv] = useState(false);
   const [result, setResult] = useState("");
   const [photo, setPhoto] = useState(null);
+  const [trailer, setTrailer] = useState(null);
   
   const initialValues = {
     name: "",
@@ -202,6 +203,16 @@ const AddData = () => {
             style={{ margin: "10px 0" }}
           /> 
 
+<TextField
+            onChange={(e) => setTrailer(e.target.value)}
+            fullWidth={true}
+            name="trailer"
+            label="Trailer link"
+            variant="outlined"
+            value={trailer}
+            style={{marginBottom:"10px"}}
+
+          />
           <br></br>
 
           <center>
@@ -229,6 +240,9 @@ const AddData = () => {
                   formData.append("rating", rating);
                   formData.append("type", type);
                   formData.append("photo", photo);
+                  formData.append("trailer", trailer);
+
+                  console.log(trailer);
 
                   const response = await axios.post(
                     `${backendUrl}/data/adddata`,

@@ -34,19 +34,23 @@ const WatchHistory = () => {
   const [sortBy, setSortBy] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [rangevalue, setRangevalue] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const token = localStorage.getItem("token");
 
   const init = async () => {
     try {
+      setLoading(true);
       const response = await axios.get(`${backendUrl}/data/getalldata`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      
       console.log(response.data);
       console.log("JSON object:", response.data);
       setAllData(response.data);
+      setLoading(false);
       console.log("status code:", response.status);
       if (response.status === 401) {
         return <h1>Unauthorized</h1>;
@@ -56,6 +60,7 @@ const WatchHistory = () => {
         return;
       }
     } catch (error) {
+      setLoading(false);
       if (axios.isAxiosError(error)) {
         // Axios error, check for network issues or server being down
         if (!error.response) {
@@ -104,9 +109,11 @@ const WatchHistory = () => {
         // console.log("Deleting data with id:", id);
         // console.log("All Data:", allData.map((data) => data.dataid));
         //console.log(sortedData)
-        setAllData((sortedData) => sortedData.filter((data) => data.dataid !== id));
+        setAllData((sortedData) =>
+          sortedData.filter((data) => data.dataid !== id)
+        );
         //console.log(sortedData)
-       // window.location.reload();
+        // window.location.reload();
       }
     } catch (error) {
       if (error.response.status === 403) {
@@ -241,6 +248,12 @@ const WatchHistory = () => {
     }
     return allData;
   };
+  if (loading) {
+    return <>
+    
+    Loading ....
+    </>
+  }
 
   if (sortedData().length === 0) {
     if (rangevalue === null) {
@@ -585,6 +598,11 @@ const WatchHistory = () => {
               </TableCell>
               <TableCell>
                 <Button size="small" variant="text">
+                  Trailer
+                </Button>
+              </TableCell>
+              <TableCell>
+                <Button size="small" variant="text">
                   Actions
                 </Button>
               </TableCell>
@@ -597,14 +615,14 @@ const WatchHistory = () => {
                     <img
                       src={`data:image/png;base64,${data.photo}`}
                       alt="Watched Photo"
-                      style={{ width: "120px", height: "100px", marginBottom: "10px" }}
+                      style={{
+                        width: "120px",
+                        height: "100px",
+                        marginBottom: "10px",
+                      }}
                     />
                   ) : (
-                    <img
-                      src="src\assets\default_Image.jpg" // Assuming data.photo contains the direct photo URL
-                      alt="Watched Photo"
-                      style={{ width: "120px", height: "100px", marginBottom: "10px" }}
-                    />
+                    <p>No Banner added</p>
                   )}
                 </TableCell>
                 <TableCell>{data.name}</TableCell>
@@ -612,6 +630,19 @@ const WatchHistory = () => {
                 <TableCell>{data.watchedon}</TableCell>
                 <TableCell>{data.rating}</TableCell>
                 <TableCell>{data.type}</TableCell>
+                <TableCell>
+                  {data.trailer ? (
+                    <a
+                      href={data.trailer}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Watch Trailer
+                    </a>
+                  ) : (
+                    <p>No Trailer added</p>
+                  )}
+                </TableCell>
 
                 <TableCell>
                   <Button
@@ -633,9 +664,9 @@ const WatchHistory = () => {
             ))}
             <TableRow>
               <TableCell colSpan={6}>
-                <center>
-                  <Link to="/adddata">Add new entry</Link>
-                </center>
+                <Link to="/adddata" style={{ marginLeft: "700px" }}>
+                  Add new entry
+                </Link>
               </TableCell>
             </TableRow>
           </TableBody>

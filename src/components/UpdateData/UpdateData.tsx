@@ -14,10 +14,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { DatePicker, DateTimePicker, DesktopDateTimePicker } from "@mui/x-date-pickers";
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import tz from 'dayjs/plugin/timezone';
+import {
+  DatePicker,
+  DateTimePicker,
+  DesktopDateTimePicker,
+} from "@mui/x-date-pickers";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import tz from "dayjs/plugin/timezone";
 dayjs.extend(utc);
 dayjs.extend(tz);
 
@@ -31,6 +35,9 @@ const UpdateData = () => {
   const [showDiv, setShowDiv] = useState(false);
   const [result, setResult] = useState("");
   const [photo, setPhoto] = useState(null);
+  const [trailer, setTrailer] = useState("");
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+
   const initialValues = {
     name: "",
     description: "",
@@ -55,23 +62,23 @@ const UpdateData = () => {
         },
       });
 
-     const date = currentData.data.watchedon
-     console.log(currentData.data)
-     console.log(date)
-     const localDate = dayjs(date).format("YYYY-MM-DD HH:mm:ss")
-     console.log(localDate)
-     console.log(typeof(localDate))
-     const localDateObject = dayjs(localDate)
+      const date = currentData.data.watchedon;
+      console.log(currentData.data);
+      console.log(date);
+      const localDate = dayjs(date).format("YYYY-MM-DD HH:mm:ss");
+      console.log(localDate);
+      console.log(typeof localDate);
+      const localDateObject = dayjs(localDate);
 
-     
       setName(currentData.data.name);
       setDescription(currentData.data.description);
       setWatchedon(localDateObject);
       setType(currentData.data.type);
       setRating(currentData.data.rating);
       setPhoto(currentData.data.photo);
+      setTrailer(currentData.data.trailer);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       if (error.response.status === 403) {
         navigate("/login?message=Session expired, please Login !!");
       } else {
@@ -84,6 +91,35 @@ const UpdateData = () => {
   useEffect(() => {
     init();
   }, []);
+
+  const handleDeletePhoto = async () => {
+    try {
+      // Make an API call to delete the photo
+      const response = await axios.delete(`${backendUrl}/data/deletephoto/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (response.status === 200) {
+        // Photo deleted successfully, update state or show a message
+        setPhoto(null);
+      } else if (response.status === 403) {
+        navigate("/login?message=Session expired, please Login !!");
+      } else {
+        console.log(response);
+        // Handle other cases if needed
+      }
+    } catch (error) {
+      console.log(error);
+      if (error.response.status === 403) {
+        navigate("/login?message=Session expired, please Login !!");
+      } else {
+        // Handle other errors
+      }
+    }
+  };
+  
 
   const validate = (values) => {
     const errors = {};
@@ -109,7 +145,7 @@ const UpdateData = () => {
     <>
       <div
         style={{
-          paddingTop: 90,
+          paddingTop: 20,
           marginBottom: 10,
           display: "flex",
           justifyContent: "center",
@@ -149,19 +185,19 @@ const UpdateData = () => {
           </p>
 
           <DateTimePicker
-          label="Watched On"
-          timezone="Asia/Kolkata"
-          ampm={false}
-          disableFuture
-          onChange={(newValue) => {
-            console.log(newValue)
-            const date = newValue.$d
-            const localDate = dayjs(date).format("YYYY-MM-DD HH:mm:ss")
-            console.log(localDate)
-            const localDateObject = dayjs(localDate)
-            setWatchedon(localDateObject)
-          }}
-          value={watchedon}
+            label="Watched On"
+            timezone="Asia/Kolkata"
+            ampm={false}
+            disableFuture
+            onChange={(newValue) => {
+              console.log(newValue);
+              const date = newValue.$d;
+              const localDate = dayjs(date).format("YYYY-MM-DD HH:mm:ss");
+              console.log(localDate);
+              const localDateObject = dayjs(localDate);
+              setWatchedon(localDateObject);
+            }}
+            value={watchedon}
           />
           <p style={{ textAlign: "center", margin: "10px", color: "red" }}>
             {formErrors.watchedon}
@@ -212,25 +248,76 @@ const UpdateData = () => {
               value={rating}
             />
           </div>
-          <center>
-          <div>
-          {photo ? (
-    <img
-      src={`data:image/png;base64,${photo}`}
-      alt="Watched Photo"
-      style={{ width: "300px", height: "150px", marginBottom: "10px" }}
-    />
-  ) : (
-    <img
-                      src="src\assets\default_Image.jpg" // Assuming data.photo contains the direct photo URL
-                      alt="Watched Photo"
-                      style={{ width: "300px", height: "150px", marginBottom: "10px" }}
-                    />
-  )}
-          </div></center>
           <p style={{ textAlign: "center", margin: "10px", color: "red" }}>
             {formErrors.rating}
           </p>
+          <center>
+            <div>
+              {(photo && !selectedPhoto) && 
+                <img
+                  src={`data:image/png;base64,${photo}`}
+                  alt="Watched Photo"
+                  style={{
+                    width: "300px",
+                    height: "150px",
+                    marginBottom: "20px",
+                  }}
+                />
+                }
+            </div>
+            <div>
+            {selectedPhoto && 
+                <img
+                src={
+                
+                    URL.createObjectURL(selectedPhoto)
+                    
+                }
+                alt="Watched Photo"
+                style={{
+                  width: "300px",
+                  height: "150px",
+                  marginBottom: "20px",
+                }}
+              />
+                }
+            </div>
+         
+    
+
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setSelectedPhoto(e.target.files[0])}
+              style={{ marginBottom: "20px" }}
+            />
+
+            
+          {selectedPhoto && (
+  <Button
+    style={{marginBottom:"10px"}}
+    size="small"        
+    variant="outlined"
+    color="secondary"
+    onClick={() => {setSelectedPhoto(null)}}
+  >
+    Clear Selection
+  </Button>
+)}
+          </center>
+
+
+          <div>
+            <TextField
+              onChange={(e) => setTrailer(e.target.value)}
+              fullWidth={true}
+              label="Traier Link"
+              name="trailer"
+              variant="outlined"
+              value={trailer}
+            />
+          </div>
+
           <br></br>
 
           <center>
@@ -242,33 +329,38 @@ const UpdateData = () => {
                 try {
                   e.preventDefault();
                   const fieldErrors = validate(formValues);
-                  console.log(id)
+                  console.log(id);
                   const user = localStorage.getItem("User");
-                  console.log(user)
+                  console.log(user);
                   if (Object.keys(fieldErrors).length !== 0) {
                     setFormErrors(fieldErrors);
                     console.log("formerrors -> ", formErrors);
                     return;
                   } else {
-
                     console.log(watchedon)
                     const date = watchedon.$d
                     const watchedon_date = dayjs(date).format("YYYY-MM-DD HH:mm:ss")
                     console.log(watchedon_date)
+                    const formData = new FormData();
+                    formData.append("dataid", id);
+                    formData.append("name", name);
+                    formData.append("description", description);
+                    formData.append("watchedon", watchedon_date);
+                    formData.append("rating", rating);
+                    formData.append("type", type);
+                    formData.append("trailer", trailer);
+                    formData.append("username", user);
+                    if (selectedPhoto) {
+                      formData.append("photo", selectedPhoto);
+                    }
+
                     const response = await axios.put(
                       `${backendUrl}/data/updatedata`,
-                      {
-                        dataid:id,
-                        name,
-                        description,
-                        watchedon:watchedon_date,
-                        rating,
-                        type,
-                        username:user,
-                      },
+                      formData,
                       {
                         headers: {
                           Authorization: `Bearer ${token}`,
+                          "Content-Type": "multipart/form-data",
                         },
                       }
                     );
@@ -276,9 +368,7 @@ const UpdateData = () => {
                     if (response.status === 200) {
                       //setResult(await response.data);
                       //setShowDiv(true);
-                      navigate(
-                        "/watchhistory"
-                      );
+                      navigate("/watchhistory");
                     } else if (response.status === 403) {
                       navigate(
                         "/login?message=Session expired, please Login !!"
@@ -290,6 +380,7 @@ const UpdateData = () => {
                     }
                   }
                 } catch (error) {
+                  console.log(error)
                   if (error.response.status === 403) {
                     navigate("/login?message=Session expired, please Login !!");
                   } else {
@@ -469,5 +560,3 @@ const UpdateData = () => {
 };
 
 export default UpdateData;
-
-// neetcode1@gmail.com
