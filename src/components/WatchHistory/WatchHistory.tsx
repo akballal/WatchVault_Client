@@ -61,6 +61,11 @@ const WatchHistory = () => {
       }
     } catch (error) {
       setLoading(false);
+      console.log(error)
+      if(error.response.status === 403)
+      {
+        navigate("/login?message=Session expired, please Login !!");
+      }
       if (axios.isAxiosError(error)) {
         // Axios error, check for network issues or server being down
         if (!error.response) {

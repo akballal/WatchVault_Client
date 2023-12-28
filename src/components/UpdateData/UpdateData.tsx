@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "/src/components/Signup/Signup.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import jwt from "jsonwebtoken";
@@ -37,6 +37,7 @@ const UpdateData = () => {
   const [photo, setPhoto] = useState(null);
   const [trailer, setTrailer] = useState("");
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const fileInputRef = useRef(null);
 
   const initialValues = {
     name: "",
@@ -95,12 +96,15 @@ const UpdateData = () => {
   const handleDeletePhoto = async () => {
     try {
       // Make an API call to delete the photo
-      const response = await axios.delete(`${backendUrl}/data/deletephoto/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-  
+      const response = await axios.delete(
+        `${backendUrl}/data/deletephoto/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       if (response.status === 200) {
         // Photo deleted successfully, update state or show a message
         setPhoto(null);
@@ -119,7 +123,6 @@ const UpdateData = () => {
       }
     }
   };
-  
 
   const validate = (values) => {
     const errors = {};
@@ -253,7 +256,7 @@ const UpdateData = () => {
           </p>
           <center>
             <div>
-              {(photo && !selectedPhoto) && 
+              {photo && !selectedPhoto && (
                 <img
                   src={`data:image/png;base64,${photo}`}
                   alt="Watched Photo"
@@ -263,49 +266,58 @@ const UpdateData = () => {
                     marginBottom: "20px",
                   }}
                 />
-                }
+              )}
             </div>
             <div>
-            {selectedPhoto && 
+              {selectedPhoto && (
                 <img
-                src={
-                
-                    URL.createObjectURL(selectedPhoto)
-                    
-                }
-                alt="Watched Photo"
-                style={{
-                  width: "300px",
-                  height: "150px",
-                  marginBottom: "20px",
-                }}
-              />
-                }
+                  src={URL.createObjectURL(selectedPhoto)}
+                  alt="Watched Photo"
+                  style={{
+                    width: "300px",
+                    height: "150px",
+                    marginBottom: "20px",
+                  }}
+                />
+              )}
             </div>
-         
-    
+            {photo && (
+              <Button
+                style={{ marginBottom: "10px" }}
+                size="small"
+                variant="outlined"
+                // color="secondary"
+                onClick={() => {
+                  setPhoto(null);
+                }}
+              >
+                Remove Photo
+              </Button>
+            )}
 
             <input
+             ref={fileInputRef}
               type="file"
               accept="image/*"
               onChange={(e) => setSelectedPhoto(e.target.files[0])}
               style={{ marginBottom: "20px" }}
             />
 
-            
-          {selectedPhoto && (
-  <Button
-    style={{marginBottom:"10px"}}
-    size="small"        
-    variant="outlined"
-    color="secondary"
-    onClick={() => {setSelectedPhoto(null)}}
-  >
-    Clear Selection
-  </Button>
-)}
+            {selectedPhoto && (
+              <Button
+                style={{ marginBottom: "10px" }}
+                size="small"
+                variant="outlined"
+                // color="secondary"
+                onClick={() => {
+                  setSelectedPhoto(null);
+                  fileInputRef.current.value = ''; // Reset the file input
+                }}
+              >
+                Clear Selection
+              </Button>
+            )}
           </center>
-
 
           <div>
             <TextField
@@ -337,10 +349,12 @@ const UpdateData = () => {
                     console.log("formerrors -> ", formErrors);
                     return;
                   } else {
-                    console.log(watchedon)
-                    const date = watchedon.$d
-                    const watchedon_date = dayjs(date).format("YYYY-MM-DD HH:mm:ss")
-                    console.log(watchedon_date)
+                    console.log(watchedon);
+                    const date = watchedon.$d;
+                    const watchedon_date = dayjs(date).format(
+                      "YYYY-MM-DD HH:mm:ss"
+                    );
+                    console.log(watchedon_date);
                     const formData = new FormData();
                     formData.append("dataid", id);
                     formData.append("name", name);
@@ -380,7 +394,7 @@ const UpdateData = () => {
                     }
                   }
                 } catch (error) {
-                  console.log(error)
+                  console.log(error);
                   if (error.response.status === 403) {
                     navigate("/login?message=Session expired, please Login !!");
                   } else {
@@ -406,157 +420,5 @@ const UpdateData = () => {
       </div>
     </>
   );
-  // return (
-  //   <div id="signup" className="flex-col">
-  //     <h1>Update Data</h1>
-  //     <div className="signup-form">
-  //       <div className="subform">
-  //         <label htmlFor="name">Name: </label>
-  //         <input
-  //           // onChange={(e) => {
-  //           //   setName(e.target.value);
-  //           // }}
-  //           type="text"
-  //           required
-  //           name="name"
-  //           placeholder="Movie/Series Name"
-  //           onChange={handleChange}
-  //           value={formValues.name}
-  //         />
-  //       </div>
-  //       <p style={{ textAlign: "center", margin: "10px", color:"red"}}> {formErrors.name} </p>
-
-  //       <div className="subform">
-  //         <label htmlFor="description">Description: </label>
-  //         <input
-  //           onChange={handleChange}
-  //           type="text"
-  //           required
-  //           name="description"
-  //           placeholder="Movie/Series description"
-  //           value={formValues.description}
-  //         />
-  //       </div>
-  //       <p style={{ textAlign: "center", margin: "10px", color:"red" }}> {formErrors.description} </p>
-  //       <div className="subform">
-  //         <label htmlFor="watchedon">Watched on: </label>
-  //         <input
-  //           onChange={handleChange}
-  //           type="Date"
-  //           required
-  //           name="watchedon"
-  //           placeholder="Movie/Series description"
-  //           value={formValues.watchedon}
-  //         />
-  //       </div>
-  //       <p style={{ textAlign: "center", margin: "10px", color:"red" }}> {formErrors.watchedon} </p>
-  //       <div className="subform">
-  //         <label htmlFor="rating">Rating: </label>
-  //         <select
-  //           onChange={handleChange}
-  //           value={rating}
-  //           required
-  //           name="rating"
-  //           id="rating"
-  //         >
-  //           <option value="">Select a rating</option>
-  //           <option value="1">1</option>
-  //           <option value="2">2</option>
-  //           <option value="3">3</option>
-  //           <option value="4">4</option>
-  //           <option value="5">5</option>
-  //         </select>
-  //       </div>
-  //       <p style={{ textAlign: "center", margin: "10px", color:"red" }}> {formErrors.rating} </p>
-  //       <div className="subform">
-  //     <label htmlFor="type">Type: </label>
-  //     <div>
-  //       <label>
-  //         <input
-  //           type="radio"
-  //           value="Movie"
-  //           checked={type === 'Movie'}
-  //           onChange={handleChange}
-  //           required
-  //           name="type"
-  //         />
-  //         Movie
-  //       </label>
-  //       <label>
-  //         <input
-  //           type="radio"
-  //           value="Series"
-  //           checked={type === 'Series'}
-  //           onChange={handleChange}
-  //           required
-  //           name="type"
-  //         />
-  //         Series
-  //       </label>
-  //     </div>
-  //     <p style={{ textAlign: "center", margin: "10px", color:"red" }}> {formErrors.type} </p>
-  //   </div>
-
-  //       <button
-  //         type="submit"
-  //         id="test"
-  //         onClick={async (e) => {
-  //           try {
-  //               e.preventDefault();
-  //               const fieldErrors = validate(formValues);
-  //               const user = localStorage.getItem("User");
-  //               if(Object.keys(fieldErrors).length !== 0)
-  //               {
-  //               setFormErrors(fieldErrors);
-  //               return;
-  //               }
-  //               else{
-  //                 const {name, description, watchedon, rating, type} = formValues
-  //                 console.log(formValues)
-
-  //             const response = await axios.put(`${backendUrl}/updaterecord`,
-  //             {
-  //               id,name,description,watchedon,rating,type,user
-  //             },
-  //             {
-  //               headers: {
-  //                 authorization: token
-  //               }
-  //             })
-
-  //             if (response.status === 200) {
-  //               setResult(await response.data);
-  //               setShowDiv(true);
-
-  //             } else if(response.status === 403) {
-  //               navigate("/login?message=Session expired, please Login !!")
-  //             }
-  //             else {
-  //               setResult(await response.data);
-  //               setShowDiv(true);
-  //               console.log(response);
-  //             }
-  //           }} catch (error) {
-  //             if(error.response.status === 403)
-  //             {
-  //               navigate("/login?message=Session expired, please Login !!")
-  //             }
-  //             else
-  //             {
-  //               console.log(error)
-  //               return(<h1>Some error occured, please check console logs for more details</h1>)
-  //             }
-  //           }
-  //         }}
-  //       >
-  //         Update Data
-  //       </button>
-  //     </div>
-  //     {showDiv && (
-  //       <div style={{ textAlign: "center", margin: "10px" }}>{result}</div>
-  //     )}
-  //   </div>
-  // );
 };
-
 export default UpdateData;
