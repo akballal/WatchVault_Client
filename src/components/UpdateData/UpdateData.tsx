@@ -368,6 +368,19 @@ const UpdateData = () => {
                     if (selectedPhoto) {
                       formData.append("photo", selectedPhoto);
                     }
+                    else if (photo) {
+                      // If no new photo is selected but there is an existing photo, convert it to a Blob
+                      const byteCharacters = atob(photo);
+                      const byteNumbers = new Array(byteCharacters.length);
+                      for (let i = 0; i < byteCharacters.length; i++) {
+                        byteNumbers[i] = byteCharacters.charCodeAt(i);
+                      }
+                      const byteArray = new Uint8Array(byteNumbers);
+                      const blob = new Blob([byteArray], { type: "image/png" });
+                  
+                      // Append the existing photo as a Blob to the FormData
+                      formData.append("photo", blob, "existing_photo.png");
+                    }
 
                     const response = await axios.put(
                       `${backendUrl}/data/updatedata`,

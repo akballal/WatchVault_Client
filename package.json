@@ -22,12 +22,14 @@
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
     "dayjs": "^1.11.9",
+    "jimp": "^0.22.10",
     "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^3.1.2",
     "react": "^18.2.0",
     "react-datepicker": "^4.15.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.2",
+    "sharp": "^0.33.2",
     "styled-components": "^5.3.11"
   },
   "devDependencies": {
