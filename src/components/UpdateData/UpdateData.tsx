@@ -66,14 +66,15 @@ const UpdateData = () => {
       const date = currentData.data.watchedon;
       console.log(currentData.data);
       console.log(date);
-      const localDate = dayjs(date).format("YYYY-MM-DD HH:mm:ss");
+      const localDate = dayjs(date).tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
       console.log(localDate);
       console.log(typeof localDate);
       const localDateObject = dayjs(localDate);
+      const extendedDate = localDateObject.add(5, 'hour').add(30, 'minute');
 
       setName(currentData.data.name);
       setDescription(currentData.data.description);
-      setWatchedon(localDateObject);
+      setWatchedon(extendedDate);
       setType(currentData.data.type);
       setRating(currentData.data.rating);
       setPhoto(currentData.data.photo);

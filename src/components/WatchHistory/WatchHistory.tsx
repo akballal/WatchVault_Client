@@ -27,8 +27,7 @@ const backendUrl = "http://localhost:8080";
 const WatchHistory = () => {
   const navigate = useNavigate();
   const [allData, setAllData] = useState([]);
-  // const [startDate, setStartDate] = useState(null);
-  // const [endDate, setEndDate] = useState(null);
+  
   const [emptyStartDate, setEmptyStartDate] = useState(false);
   const [emptyEndDate, setEmptyEndDate] = useState(false);
   const [sortBy, setSortBy] = useState("");
@@ -49,7 +48,14 @@ const WatchHistory = () => {
       
       console.log(response.data);
       console.log("JSON object:", response.data);
-      setAllData(response.data);
+      // Parse and format dates with local timezone
+      const formattedData = response.data.map(item => ({
+        ...item,
+        watchedon: dayjs(item.watchedon).tz(dayjs.tz.guess()).format('YYYY-MM-DD HH:mm:ss'),
+      }));
+
+
+      setAllData(formattedData);
       setLoading(false);
       console.log("status code:", response.status);
       if (response.status === 401) {
@@ -289,30 +295,7 @@ const WatchHistory = () => {
         <TableContainer component={Paper}>
           <Table>
             <TableBody>
-              {/* <TableRow>
-                <TableCell>
-                  <TextField
-                    onChange={(e) => { setStartDate(e.target.value) }}
-                    type="date"
-                    required
-                    placeholder="Start Date"
-                  />
-                </TableCell>
-                <TableCell>
-                  <TextField
-                    onChange={(e) => { setEndDate(e.target.value) }}
-                    type="date"
-                    required
-                    placeholder="End Date"
-                  />
-                </TableCell>
-                <TableCell>
-                  <Button variant="contained" onClick={handleFilters}>Apply Filters</Button>
-                </TableCell>
-                <TableCell>
-                  <Button variant="contained" onClick={clearFilters}>Clear Filters</Button>
-                </TableCell>
-              </TableRow> */}
+              
               <TableRow>
                 <TableCell>
                   <div>
@@ -373,45 +356,6 @@ const WatchHistory = () => {
                 </TableRow>
               )}
 
-              {/* <TableRow>
-                <TableCell><b>Sr.No</b></TableCell>
-                <TableCell>
-                  <Button size="small" variant="text" onClick={() => handleSort('name')}>
-                    <TableSortLabel active={sortBy === 'name'} direction={sortOrder}>
-                      Name
-                    </TableSortLabel>
-                  </Button>
-                </TableCell>
-                <TableCell>
-                  <Button size="small" variant="text" onClick={() => handleSort('description')}>
-                    <TableSortLabel active={sortBy === 'description'} direction={sortOrder}>
-                      Description
-                    </TableSortLabel>
-                  </Button>
-                </TableCell>
-                <TableCell>
-                  <Button size="small" variant="text" onClick={() => handleSort('watchedon')}>
-                    <TableSortLabel active={sortBy === 'watchedon'} direction={sortOrder}>
-                      Watched On
-                    </TableSortLabel>
-                  </Button>
-                </TableCell>
-                <TableCell>
-                  <Button size="small" variant="text" onClick={() => handleSort('rating')}>
-                    <TableSortLabel active={sortBy === 'rating'} direction={sortOrder}>
-                      Rating
-                    </TableSortLabel>
-                  </Button>
-                </TableCell>
-                <TableCell>
-                  <Button size="small" variant="text" onClick={() => handleSort('type')}>
-                    <TableSortLabel active={sortBy === 'type'} direction={sortOrder}>
-                      Type
-                    </TableSortLabel>
-                  </Button>
-                </TableCell>
-                <TableCell><b>Actions</b></TableCell>
-              </TableRow> */}
             </TableBody>
           </Table>
         </TableContainer>
@@ -472,30 +416,7 @@ const WatchHistory = () => {
                 </Button>
               </TableCell>
             </TableRow>
-            {/* <TableRow>
-              <TableCell>
-                <TextField
-                  onChange={(e) => { setStartDate(e.target.value) }}
-                  type="date"
-                  required
-                  placeholder="Start Date"
-                />
-              </TableCell>
-              <TableCell>
-                <TextField
-                  onChange={(e) => { setEndDate(e.target.value) }}
-                  type="date"
-                  required
-                  placeholder="End Date"
-                />
-              </TableCell>
-              <TableCell>
-                <Button variant="contained" onClick={handleFilters}>Apply Filters</Button>
-              </TableCell>
-              <TableCell>
-                <Button variant="contained" onClick={clearFilters}>Clear Filters</Button>
-              </TableCell>
-            </TableRow> */}
+            
             {emptyStartDate && (
               <TableRow>
                 <TableCell colSpan={6}>

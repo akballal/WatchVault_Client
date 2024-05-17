@@ -134,7 +134,8 @@ const AddData = () => {
             
              const date = newValue.$d
              const localDate = dayjs(date).format("YYYY-MM-DD HH:mm:ss")
-
+             console.log(date);
+             console.log(localDate);
            //const date = dayjs(newValue.$d);
     
     // Convert local date to UTC date without offset
