@@ -31,4 +31,4 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/your-repo:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/watchvault-client:latest
