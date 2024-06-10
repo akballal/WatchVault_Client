@@ -14,10 +14,9 @@ import AddData from "./components/AddData/AddData";
 import UpdateData from "./components/UpdateData/UpdateData";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-
-
 import "./App.css";
 import Appbar from "./components/Appbar";
+
 function App({ children }) {
   return (
     <div className="app-container">
