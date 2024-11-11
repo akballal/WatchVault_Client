@@ -42,7 +42,7 @@ const Appbar = () => {
         }}
       >
         <div>
-          <Typography variant={"h6"}>WatchVault</Typography>
+          <Typography variant={"h6"}><b>WatchVault</b></Typography>
         </div>
 
         <div style={{ display: "flex" }}>
@@ -58,7 +58,7 @@ const Appbar = () => {
                 window.location = "/";
               }}
             >
-              Logout
+              <b>Logout</b>
             </Button>
           </div>
         </div>
@@ -74,7 +74,7 @@ const Appbar = () => {
         }}
       >
         <div>
-          <Typography variant={"h6"}>WatchVault</Typography>
+          <Typography variant={"h6"}><b>WatchVault</b></Typography>
         </div>
 
         <div style={{ display: "flex" }}>
@@ -87,7 +87,7 @@ const Appbar = () => {
                 // navigate("/signup")
               }}
             >
-              Signup
+              <b>Signup</b>
             </Button>
           </div>
           <div>
@@ -99,7 +99,7 @@ const Appbar = () => {
                 //navigate("/login")
               }}
             >
-              Login
+              <b>Login</b>
             </Button>
           </div>
         </div>

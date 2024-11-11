@@ -27,7 +27,7 @@ const backendUrl = "http://localhost:8080";
 const WatchHistory = () => {
   const navigate = useNavigate();
   const [allData, setAllData] = useState([]);
-  
+
   const [emptyStartDate, setEmptyStartDate] = useState(false);
   const [emptyEndDate, setEmptyEndDate] = useState(false);
   const [sortBy, setSortBy] = useState("");
@@ -45,7 +45,7 @@ const WatchHistory = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      
+
       console.log(response.data);
       console.log("JSON object:", response.data);
       // Parse and format dates with local timezone
@@ -68,8 +68,7 @@ const WatchHistory = () => {
     } catch (error) {
       setLoading(false);
       console.log(error)
-      if(error.response.status === 403)
-      {
+      if (error.response.status === 403) {
         navigate("/login?message=Session expired, please Login !!");
       }
       if (axios.isAxiosError(error)) {
@@ -261,8 +260,8 @@ const WatchHistory = () => {
   };
   if (loading) {
     return <>
-    
-    Loading ....
+
+      Loading ....
     </>
   }
 
@@ -292,73 +291,36 @@ const WatchHistory = () => {
     }
     return (
       <div>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableBody>
-              
-              <TableRow>
-                <TableCell>
-                  <div>
-                    <DateRangePicker
-                      disableFuture
-                      localeText={{ start: "Start-Date", end: "End-Date" }}
-                      autoFocus={undefined}
-                      onChange={(newValue) => {
-                        console.log(newValue);
-                        setRangevalue(newValue);
-                      }}
-                    />
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    style={{ whiteSpace: "nowrap" }}
-                    onClick={handleFilters}
-                  >
-                    Apply Filters
-                  </Button>
-                </TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    style={{ whiteSpace: "nowrap" }}
-                    onClick={clearFilters}
-                  >
-                    Clear Filters
-                  </Button>
-                </TableCell>
-              </TableRow>
-              {emptyStartDate && (
-                <TableRow>
-                  <TableCell colSpan={6}>
-                    <p
-                      className="error-message"
-                      style={{ textAlign: "center", margin: "10px" }}
-                    >
-                      Please provide a start date.
-                    </p>
-                  </TableCell>
-                </TableRow>
-              )}
-              {emptyEndDate && (
-                <TableRow>
-                  <TableCell colSpan={6}>
-                    <p
-                      className="error-message"
-                      style={{ textAlign: "center", margin: "10px" }}
-                    >
-                      Please provide an end date.
-                    </p>
-                  </TableCell>
-                </TableRow>
-              )}
-
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <div style={{ display: "flex", justifyContent: "flex-start", marginTop: "16px" }}>
+          <div style={{ marginRight: "8px" }}>
+            <DateRangePicker
+              disableFuture
+              localeText={{ start: "Start-Date", end: "End-Date" }}
+              autoFocus={undefined}
+              onChange={(newValue) => {
+                console.log(newValue);
+                setRangevalue(newValue);
+              }}
+              size="small"
+            />
+          </div>
+          <Button
+            variant="contained"
+            size="small"
+            style={{ whiteSpace: "nowrap", marginRight: "8px" }}
+            onClick={handleFilters}
+          >
+            Apply Filters
+          </Button>
+          <Button
+            variant="contained"
+            size="small"
+            style={{ whiteSpace: "nowrap" }}
+            onClick={clearFilters}
+          >
+            Clear Filters
+          </Button>
+        </div>
         <div
           style={{
             paddingTop: 90,
@@ -379,9 +341,9 @@ const WatchHistory = () => {
   return (
     <div id="allproblems">
       <TableContainer component={Paper}>
-        <Table>
+        {/* <Table>
           <TableBody>
-            <TableRow>
+            <TableRow >
               <TableCell>
                 <div>
                   <DateRangePicker
@@ -392,6 +354,7 @@ const WatchHistory = () => {
                       console.log(newValue);
                       setRangevalue(newValue);
                     }}
+                    size="small"
                   />
                 </div>
               </TableCell>
@@ -405,7 +368,7 @@ const WatchHistory = () => {
                   Apply Filters
                 </Button>
               </TableCell>
-              <TableCell>
+              <TableCell >
                 <Button
                   variant="contained"
                   size="small"
@@ -416,43 +379,79 @@ const WatchHistory = () => {
                 </Button>
               </TableCell>
             </TableRow>
-            
-            {emptyStartDate && (
-              <TableRow>
-                <TableCell colSpan={6}>
-                  <p
-                    className="error-message"
-                    style={{ textAlign: "center", margin: "10px" }}
-                  >
-                    Please provide a start date.
-                  </p>
-                </TableCell>
-              </TableRow>
-            )}
-            {emptyEndDate && (
-              <TableRow>
-                <TableCell colSpan={6}>
-                  <p
-                    className="error-message"
-                    style={{ textAlign: "center", margin: "10px" }}
-                  >
-                    Please provide an end date.
-                  </p>
-                </TableCell>
-              </TableRow>
-            )}
+            </TableBody>
+            </Table> */}
+        <div style={{ display: "flex", justifyContent: "flex-start", marginTop: "16px" }}>
+          <div style={{ marginRight: "8px" }}>
+            <DateRangePicker
+              disableFuture
+              localeText={{ start: "Start-Date", end: "End-Date" }}
+              autoFocus={undefined}
+              onChange={(newValue) => {
+                console.log(newValue);
+                setRangevalue(newValue);
+              }}
+              size="small"
+            />
+          </div>
+          <Button
+            variant="contained"
+            size="small"
+            style={{ whiteSpace: "nowrap", marginRight: "8px" }}
+            onClick={handleFilters}
+          >
+            Apply Filters
+          </Button>
+          <Button
+            variant="contained"
+            size="small"
+            style={{ whiteSpace: "nowrap" }}
+            onClick={clearFilters}
+          >
+            Clear Filters
+          </Button>
+        </div>
+
+        {/* Error message for empty start date */}
+        {emptyStartDate && (
+          <div style={{ borderBottom: "2px solid #ddd", textAlign: "center", margin: "10px 0" }}>
+            <p className="error-message" style={{ color: "red" }}>
+              Please provide a start date.
+            </p>
+          </div>
+        )}
+
+        {/* Error message for empty end date */}
+        {emptyEndDate && (
+          <div style={{ borderBottom: "2px solid #ddd", textAlign: "center", margin: "10px 0" }}>
+            <p className="error-message" style={{ color: "red" }}>
+              Please provide an end date.
+            </p>
+          </div>
+        )}
+
+
+
+
+
+
+
+        <Table>
+          <TableBody>
+            <TableRow style={{ borderBottom: "2px solid #ddd" }}>
+            </TableRow>
             <TableRow>
-              <TableCell>
+              <TableCell style={{ borderRight: '1px solid #ddd' }}>
                 <Button size="small" variant="text">
                   Sr.No
                 </Button>
               </TableCell>
-              <TableCell>
+              <TableCell style={{ borderRight: '1px solid #ddd' }}>
                 <Button size="small" variant="text">
                   Banner
                 </Button>
               </TableCell>
-              <TableCell>
+              <TableCell style={{ borderRight: '1px solid #ddd' }}>
                 <Button
                   size="small"
                   variant="text"
@@ -466,7 +465,7 @@ const WatchHistory = () => {
                   </TableSortLabel>
                 </Button>
               </TableCell>
-              <TableCell>
+              <TableCell style={{ borderRight: '1px solid #ddd' }}>
                 <Button
                   size="small"
                   variant="text"
@@ -480,7 +479,7 @@ const WatchHistory = () => {
                   </TableSortLabel>
                 </Button>
               </TableCell>
-              <TableCell>
+              <TableCell style={{ borderRight: '1px solid #ddd' }}>
                 <Button
                   size="small"
                   variant="text"
@@ -494,7 +493,7 @@ const WatchHistory = () => {
                   </TableSortLabel>
                 </Button>
               </TableCell>
-              <TableCell>
+              <TableCell style={{ borderRight: '1px solid #ddd' }}>
                 <Button
                   size="small"
                   variant="text"
@@ -508,7 +507,7 @@ const WatchHistory = () => {
                   </TableSortLabel>
                 </Button>
               </TableCell>
-              <TableCell>
+              <TableCell style={{ borderRight: '1px solid #ddd' }}>
                 <Button
                   size="small"
                   variant="text"
@@ -522,12 +521,12 @@ const WatchHistory = () => {
                   </TableSortLabel>
                 </Button>
               </TableCell>
-              <TableCell>
+              <TableCell style={{ borderRight: '1px solid #ddd' }}>
                 <Button size="small" variant="text">
                   Trailer
                 </Button>
               </TableCell>
-              <TableCell>
+              <TableCell style={{ borderRight: '1px solid #ddd' }}>
                 <Button size="small" variant="text">
                   Actions
                 </Button>
@@ -535,8 +534,8 @@ const WatchHistory = () => {
             </TableRow>
             {sortedData().map((data, index) => (
               <TableRow key={index}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>
+                <TableCell style={{ borderRight: '1px solid #ddd' }}>{index + 1}</TableCell>
+                <TableCell style={{ borderRight: '1px solid #ddd' }}>
                   {data.photo ? (
                     <img
                       src={`data:image/png;base64,${data.photo}`}
@@ -551,12 +550,12 @@ const WatchHistory = () => {
                     <p>No Banner added</p>
                   )}
                 </TableCell>
-                <TableCell>{data.name}</TableCell>
-                <TableCell>{data.description}</TableCell>
-                <TableCell>{data.watchedon}</TableCell>
-                <TableCell>{data.rating}</TableCell>
-                <TableCell>{data.type}</TableCell>
-                <TableCell>
+                <TableCell style={{ borderRight: '1px solid #ddd' }}>{data.name}</TableCell>
+                <TableCell style={{ borderRight: '1px solid #ddd' }}>{data.description}</TableCell>
+                <TableCell style={{ borderRight: '1px solid #ddd' }}>{data.watchedon}</TableCell>
+                <TableCell style={{ borderRight: '1px solid #ddd' }}>{data.rating}</TableCell>
+                <TableCell style={{ borderRight: '1px solid #ddd' }}>{data.type}</TableCell>
+                <TableCell style={{ borderRight: '1px solid #ddd' }}>
                   {data.trailer ? (
                     <a
                       href={data.trailer}
@@ -570,7 +569,7 @@ const WatchHistory = () => {
                   )}
                 </TableCell>
 
-                <TableCell>
+                <TableCell style={{ borderRight: '1px solid #ddd' }}>
                   <Button
                     size="small"
                     variant="outlined"
@@ -588,16 +587,15 @@ const WatchHistory = () => {
                 </TableCell>
               </TableRow>
             ))}
-            <TableRow>
-              <TableCell colSpan={6}>
-                <Link to="/adddata" style={{ marginLeft: "700px" }}>
-                  Add new entry
-                </Link>
-              </TableCell>
-            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "16px" }}>
+
+        <Link to="/adddata">
+          Add new entry
+        </Link></div>
+
     </div>
   );
 };
