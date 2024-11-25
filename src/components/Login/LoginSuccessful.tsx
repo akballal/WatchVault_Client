@@ -1,8 +1,9 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useEffect } from "react";
 import jwtDecode from "jwt-decode";
-const backendUrl = "http://localhost:8080";
+
 import axios from 'axios'
+import { BASE_URL } from "../../config/apiConfig";
 
 const LoginSuccessful = () =>
 {
@@ -12,7 +13,7 @@ const LoginSuccessful = () =>
         (async () => {
           try {
             const response = await axios.post(
-              `${backendUrl}/user/authenticate`,
+              `${BASE_URL}/user/authenticate`,
               {},
               {
                 headers: {

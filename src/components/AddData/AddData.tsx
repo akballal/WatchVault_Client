@@ -19,13 +19,14 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import tz from 'dayjs/plugin/timezone';
 import { DateTimePicker } from "@mui/x-date-pickers";
+import { BASE_URL } from "../../config/apiConfig";
 
 dayjs.extend(utc);
 dayjs.extend(tz);
 
 
 
-const backendUrl = "http://localhost:8080";
+
 
 const AddData = () => {
   const [name, setName] = useState("");
@@ -246,7 +247,7 @@ const AddData = () => {
                   console.log(trailer);
 
                   const response = await axios.post(
-                    `${backendUrl}/data/adddata`,
+                    `${BASE_URL}/data/adddata`,
                     formData,
                     {
                       headers: {

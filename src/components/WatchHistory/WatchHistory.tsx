@@ -21,8 +21,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlinedIcon from "@mui/icons-material/Delete";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 import dayjs from "dayjs";
+import { BASE_URL } from "../../config/apiConfig";
 
-const backendUrl = "http://localhost:8080";
+
 
 const WatchHistory = () => {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ const WatchHistory = () => {
   const init = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${backendUrl}/data/getalldata`, {
+      const response = await axios.get(`${BASE_URL}/data/getalldata`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -106,7 +107,7 @@ const WatchHistory = () => {
   const handleDelete = async (id) => {
     console.log("Delete data with id:", id);
     try {
-      const response = await axios.delete(`${backendUrl}/data/deletedata`, {
+      const response = await axios.delete(`${BASE_URL}/data/deletedata`, {
         headers: {
           id,
           Authorization: `Bearer ${token}`,
@@ -165,7 +166,7 @@ const WatchHistory = () => {
     const endDateObject = dayjs(endDate);
 
     try {
-      const response = await axios.get(`${backendUrl}/data/filterdata`, {
+      const response = await axios.get(`${BASE_URL}/data/filterdata`, {
         headers: {
           Authorization: `Bearer ${token}`,
           startDateObject,
@@ -201,7 +202,7 @@ const WatchHistory = () => {
   const clearFilters = async () => {
     setRangevalue(null);
     try {
-      const response = await axios.get(`${backendUrl}/data/getalldata`, {
+      const response = await axios.get(`${BASE_URL}/data/getalldata`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

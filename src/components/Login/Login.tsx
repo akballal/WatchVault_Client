@@ -4,10 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import axios from 'axios'
 import { Button, Card, TextField, Typography } from "@mui/material";
+import { BASE_URL } from "../../config/apiConfig";
 
 
 
-const backendUrl = "http://localhost:8080";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -25,7 +25,7 @@ const Login = () => {
     (async () => {
       try {
         const response = await axios.post(
-          `${backendUrl}/user/authenticate`,
+          `${BASE_URL}/user/authenticate`,
           {},
           {
             headers: {
@@ -116,8 +116,8 @@ const Login = () => {
                             setPasswordError(false);
                           }
                           setShowDiv(false);
-                          console.log(`${backendUrl}/user/login`);
-                          const response = await axios.post(`${backendUrl}/user/login`,
+                          console.log(`${BASE_URL}/user/login`);
+                          const response = await axios.post(`${BASE_URL}/user/login`,
                           {
                             username,password
                           },

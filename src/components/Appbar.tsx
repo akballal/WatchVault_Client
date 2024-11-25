@@ -3,7 +3,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 const token = localStorage.getItem("token");
-const backendUrl = "http://localhost:8080";
+
+import { BASE_URL } from '../config/apiConfig';
+
 
 const Appbar = () => {
   //const navigate = useNavigate();
@@ -13,7 +15,7 @@ const Appbar = () => {
     try {
       console.log(token);
       const response = await axios.post(
-        `${backendUrl}/user/authenticate`,
+        `${BASE_URL}/user/authenticate`,
         {},
         {
           headers: {

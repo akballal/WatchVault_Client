@@ -3,16 +3,17 @@ import { Link, useNavigate } from "react-router-dom";
 import backgroundImage from '/src/assets/bg-image.jpg';
 import { useEffect } from "react";
 import axios from "axios";
+import { BASE_URL } from "../../config/apiConfig";
 
 
-const backendUrl = "http://localhost:8080";
+
 const HomePage = () => {
   const navigate = useNavigate();
   useEffect(() => {
     (async () => {
       try {
         const response = await axios.post(
-          `${backendUrl}/user/authenticate`,
+          `${BASE_URL}/user/authenticate`,
           {},
           {
             headers: {

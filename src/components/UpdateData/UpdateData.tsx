@@ -22,10 +22,11 @@ import {
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import tz from "dayjs/plugin/timezone";
+import { BASE_URL } from "../../config/apiConfig";
 dayjs.extend(utc);
 dayjs.extend(tz);
 
-const backendUrl = "http://localhost:8080";
+
 const UpdateData = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -56,7 +57,7 @@ const UpdateData = () => {
 
   const init = async () => {
     try {
-      const currentData = await axios.get(`${backendUrl}/data/getdatabyid`, {
+      const currentData = await axios.get(`${BASE_URL}/data/getdatabyid`, {
         headers: {
           id,
           Authorization: `Bearer ${token}`,
@@ -98,7 +99,7 @@ const UpdateData = () => {
     try {
       // Make an API call to delete the photo
       const response = await axios.delete(
-        `${backendUrl}/data/deletephoto/${id}`,
+        `${BASE_URL}/data/deletephoto/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -384,7 +385,7 @@ const UpdateData = () => {
                     }
 
                     const response = await axios.put(
-                      `${backendUrl}/data/updatedata`,
+                      `${BASE_URL}/data/updatedata`,
                       formData,
                       {
                         headers: {
