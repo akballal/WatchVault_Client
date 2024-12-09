@@ -24,17 +24,18 @@ npm install
 ```
 
 3. Running the Frontend
-1. Start the development server:
-```bash
-npm run dev
-```
-2. By default, the application will be available at http://localhost:5173.
-3. Ensure the backend server is running and accessible. See the backend setup instructions here: [WatchVault Server.](https://github.com/akballal/WatchVault_Server/blob/main/README.md)
-4. Update the backend server's URL in the frontend configuration file:
-```bash
-// src/config/apiConfig.ts
-export const BASE_URL = 'http://localhost:8080';
-```
+    1. Ensure the backend server is running and accessible. See the backend setup instructions here: [WatchVault Server.](https://github.com/akballal/WatchVault_Server/blob/main/README.md)
+    2. Update the backend server's URL in the frontend configuration file:
+    ```bash
+    // src/config/apiConfig.ts
+    export const BASE_URL = 'http://localhost:8080';
+    ```
+    3. Start the development server:
+    ```bash
+    npm run dev
+    ```
+    4. By default, the application will be available at http://localhost:5173.
+    
 # Running the Application Locally Using Docker
 Follow these steps to build and run the application in a Docker container:
 
