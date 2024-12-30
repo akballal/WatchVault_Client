@@ -1,2 +1,2 @@
 // src/config/apiConfig.ts
-export const BASE_URL: string = 'http://localhost:8080';
+export const BASE_URL: string = import.meta.env.VITE_BASE_URL
