@@ -32,7 +32,7 @@ const AddData = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [watchedon, setWatchedon] = useState(null);
-  const [rating, setRating] = useState<number | null>(null);
+  const [rating, setRating] = useState(null);
   const [type, setType] = useState("");
   const [showDiv, setShowDiv] = useState(false);
   const [result, setResult] = useState("");

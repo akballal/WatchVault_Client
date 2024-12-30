@@ -86,7 +86,7 @@ const Signup = () => {
                 })
                  navigate('/signupsuccessful');
                 
-              } catch (error: any) {
+              } catch (error) {
                 console.log(error)
                 
                 if (axios.isAxiosError(error)) {

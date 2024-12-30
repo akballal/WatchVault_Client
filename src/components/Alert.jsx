@@ -1,11 +1,6 @@
-import { ReactNode } from "react";
+import React from "react";
 
-interface Props {
-  children: ReactNode;
-  OnClose: () => void;
-}
-
-function Alert({ children, OnClose }: Props) {
+function Alert({ children, OnClose }) {
   return (
     <div
       className="alert alert-warning alert-dismissible fade show"

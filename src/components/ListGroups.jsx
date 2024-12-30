@@ -1,17 +1,13 @@
 import { MouseEvent, useState } from "react";
 
-interface Props {
-  items: String[];
-  heading: String;
-  onSelectItem: (item: String) => void;
-}
-function ListGroups({ items, heading, onSelectItem }: Props) {
+
+function ListGroups({ items, heading, onSelectItem }) {
   //Event Handling
-  const handleEvent = (event: MouseEvent) => {
-    console.log(event);
-    const target = event.target as HTMLElement;
-    console.log(target.innerHTML);
-  };
+  // const handleEvent = (event: MouseEvent) => {
+  //   console.log(event);
+  //   const target = event.target as HTMLElement;
+  //   console.log(target.innerHTML);
+  // };
 
   const [selectedIndex, setSelectedIndex] = useState(-1);
   return (

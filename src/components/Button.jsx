@@ -1,13 +1,4 @@
-interface props {
-  Buttons: any[];
-  onClick: () => void;
-}
-
-function handleClickEvent() {
-  return;
-}
-
-function Button({ Buttons, onClick }: props) {
+function Button({ Buttons, onClick }) {
   return (
     <>
       {Buttons.map((b) => (

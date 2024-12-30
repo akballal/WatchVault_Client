@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "/src/components/Signup/Signup.css";
 import { useLocation, useNavigate } from "react-router-dom";
-import jwt from "jsonwebtoken";
+//import jwt from "jsonwebtoken";
 import axios from "axios";
 import {
   Button,
@@ -30,8 +30,8 @@ dayjs.extend(tz);
 const UpdateData = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [watchedon, setWatchedon] = useState<string | null>(null);
-  const [rating, setRating] = useState<number | null>(null);
+  const [watchedon, setWatchedon] = useState(null);
+  const [rating, setRating] = useState(null);
   const [type, setType] = useState("");
   const [showDiv, setShowDiv] = useState(false);
   const [result, setResult] = useState("");
