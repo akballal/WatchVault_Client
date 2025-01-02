@@ -43,9 +43,7 @@ const HomePage = () => {
       display: "flex",
       justifyContent: "center"
     }}>
-      <Typography variant={"h6"}>
-        Welcome to WatchVault, Here you can save all your movie/series watch history.
-      </Typography>
+      <h1 className="header">Welcome to WatchVault, Here you can save all your movie/series watch history.</h1>
     </div>
     <div style={{
       display: "flex",

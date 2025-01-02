@@ -279,14 +279,14 @@ const WatchHistory = () => {
             textAlign: "center", // To center text within Typography
           }}
         >
-          <Typography variant="h6" style={{ marginBottom: "10px" }}>
-            Nothing added yet!! Start adding your watch history
-          </Typography>
-
+          <h1 className="header">Nothing added yet!! Start adding your watch history</h1>
           {/* Add a blank line using margin or padding */}
           <div style={{ margin: "5px 0" }}></div>
+          <Link to="/adddata" className="link-button">
+          Add Data
+        </Link>
 
-          <Link to="/adddata">Add Data</Link>
+          
         </div>
       );
     }
